@@ -5,7 +5,10 @@
 	</PropertyGroup>
 	<ItemDefinitionGroup>
 		<ClCompile>
-			<AdditionalIncludeDirectories>$(SD_ROOT)/framework</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories  Condition="$(NoFrameworkHeaders) == ''" >$(SD_ROOT)/framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 		</ClCompile>
+    <Link>
+      <AdditionalDependencies>framework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
 	</ItemDefinitionGroup>
 </Project> 

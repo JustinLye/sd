@@ -15,16 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="framework.props" />
-    <None Include="sd.props" />
-    <None Include="gtest.props" />
-    <None Include="glad.props" />
-    <None Include="glfw.props" />
-    <None Include="opengl.props" />
-    <None Include="graphics.props" />
-    <None Include="stb.props" />
-    <None Include="glm.props" />
-    <None Include="geometry.props" />
-    <None Include="primative_shapes.props" />
+    <ClInclude Include="shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <primative_shapesPropertySheetImported>true</primative_shapesPropertySheetImported>
+  </PropertyGroup>
+  <Import Project="$(SD_ROOT)\property_sheets\geometry.props" Condition="$(geometryPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\graphics.props" Condition="$(graphicsPropertySheetImported) == ''" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories Condition="$(NoPrimative_ShapesHeaders) == ''">$(SD_ROOT)\primative_shapes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

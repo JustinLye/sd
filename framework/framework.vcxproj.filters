@@ -24,6 +24,12 @@
     <ClInclude Include="program_support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="framework_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program_support.cc">

@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(SD_ROOT)\property_sheets\glfw.props" Condition="$(GLFWPropertySheetImported) == ''" />
-    <Import Project="$(SD_ROOT)\property_sheets\glad.props" Condition="$(gladPropertySheetImported) == ''" />
-	<PropertyGroup>
-		<graphicsPropertySheetImported>true</graphicsPropertySheetImported>
-	</PropertyGroup>
-	<ItemDefinitionGroup>
-		<Link>
-			<AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-		</Link>
-	</ItemDefinitionGroup>
-</Project> 
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(SD_ROOT)\property_sheets\opengl.props" Condition="$(OpenGLPropertySheetImported) == ''" />
+  <PropertyGroup>
+    <graphicsPropertySheetImported>true</graphicsPropertySheetImported>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories Condition="$(NoGraphicsHeaders) == ''">$(SD_ROOT)\graphics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

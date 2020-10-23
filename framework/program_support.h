@@ -30,12 +30,14 @@
 #endif
 
 
+#include "framework_api.h"
+
 namespace sd {
 namespace framework {
   struct environment_vars {
     static constexpr const char* root_directory = "SD_ROOT";
   };
-  struct program_support {
+  struct SD_FRAMEWORK_API program_support {
     enum class OperatingSystem : unsigned int {
       WINDOWS,
       LINUX,
