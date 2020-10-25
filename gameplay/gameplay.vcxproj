@@ -74,6 +74,7 @@
   </PropertyGroup>
   <Import Project="$(SD_ROOT)\property_sheets\sd.props" Condition="$(SDPropertySheetImported) == ''" />
   <Import Project="$(SD_ROOT)\property_sheets\graphics.props" Condition="$(graphicsPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\glm.props" Condition="$(glmPropertySheetImported) == ''" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -144,6 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="drawable_object.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="resources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

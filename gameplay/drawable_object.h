@@ -1,8 +1,7 @@
 #pragma once
-#pragma once
 
 namespace sd {
-namespace graphics {
+namespace gameplay {
 
 class DrawableObject {
 protected:

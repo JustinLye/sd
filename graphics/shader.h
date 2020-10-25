@@ -12,7 +12,7 @@ namespace graphics {
 	class SD_GRAPHICS_API Shader {
 		std::map<GLenum, GLuint> m_ShaderIds;
 		std::map<std::string, GLint> m_UniformLocations;
-		GLuint m_ProgramId;
+		mutable GLuint m_ProgramId;
 	public:
 		Shader();
 
@@ -28,6 +28,8 @@ namespace graphics {
 
 		virtual GLint uniform(const char* name);
 		virtual GLint uniform(const std::string& name);
+
+		virtual GLuint program_id() const;
 
 		static bool link_program(GLuint program_id);
 		static bool link_status(GLuint program_id);

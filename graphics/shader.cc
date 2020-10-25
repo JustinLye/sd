@@ -11,12 +11,11 @@ namespace sd {
 namespace graphics {
 	Shader::Shader() : 
 		m_ShaderIds(),
-		m_ProgramId() {}
+		m_ProgramId(0U) {}
 
 	void Shader::load(const GLenum& shader_type, const char* source) {
 		auto shader_id = glCreateShader(shader_type);
 		m_ShaderIds[shader_type] = shader_id;
-		std::cout << "shader source: " << std::endl << source << std::endl;
 		glShaderSource(shader_id, 1, &source, NULL);
 		glCompileShader(shader_id);
 		GLint shader_compiled = 0;
@@ -28,8 +27,9 @@ namespace graphics {
 			throw std::runtime_error(message);
 		}
 		auto uniform_names = get_uniform_variable_names(source);
+		auto id = program_id();
 		for (auto name : uniform_names)
-			m_UniformLocations.insert({ name, uniform(m_ProgramId, name) });
+			m_UniformLocations.insert({ name, uniform(id, name) });
 	}
 
 	void Shader::load(const GLenum& shader_type, const std::string& source) {
@@ -39,8 +39,6 @@ namespace graphics {
 	void Shader::load(const GLenum& shader_type, std::basic_istream<char>& source) {
 		std::stringstream input_stream_content;
 		input_stream_content << source.rdbuf();
-		std::cout << input_stream_content.str() << std::endl;
-		//auto shader_source = input_stream_content.str();
 		load(shader_type, input_stream_content.str());
 	}
 
@@ -55,22 +53,28 @@ namespace graphics {
 		source_file.close();
 	}
 
-	void Shader::link() {
+	GLuint Shader::program_id() const {
 		if (m_ProgramId == 0)
 			m_ProgramId = glCreateProgram();
-		
-		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds), [this](auto shader_id) { glAttachShader(m_ProgramId, shader_id.second); });
-		auto link_status = link_program(m_ProgramId);
+		return m_ProgramId;
+	}
+
+	void Shader::link() {
+		auto id = program_id();
+		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds),
+			[this, id](auto shader_id) { glAttachShader(id, shader_id.second); });
+		auto link_status = link_program(id);
 		if (!link_status) {
-			auto info_log = get_program_info_log(m_ProgramId);
+			auto info_log = get_program_info_log(id);
 			std::cerr << "Failed to link program: " << info_log << std::endl;
 		}
-		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds), [this](auto shader_id) { glDeleteShader(shader_id.second); });
+		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds),
+			[this](auto shader_id) { glDeleteShader(shader_id.second); });
 		m_ShaderIds.clear();
 	}
 
 	void Shader::use() const {
-		glUseProgram(m_ProgramId);
+		glUseProgram(program_id());
 	}
 
 	void Shader::stop_use() const {
