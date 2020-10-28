@@ -5,6 +5,8 @@
 #include "geometry/geometry_data.h"
 #include "graphics/drawable_object.h"
 
+
+
 namespace sd {
 namespace primative_shapes {
 
@@ -21,12 +23,15 @@ public:
   virtual GLenum primative_type() const = 0;
   virtual void draw() const;
   virtual void buffer();
+
 };
 
 template<class GeoData>
 Shape<GeoData>::Shape() :
-  m_ShapeData() {
-  m_ShapeData.init_data();
+  m_ShapeData(),
+  m_VerticesVBO(0U),
+  m_IndicesVBO(0U) {
+  m_ShapeData.init();
 }
 
 template<class GeoData>
@@ -47,20 +52,18 @@ void Shape<GeoData>::buffer() {
   glBufferData(GL_ARRAY_BUFFER, m_ShapeData.vertex_count() * m_ShapeData.size(), 0, GL_STATIC_DRAW);
   GLfloat* buffer = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
   m_ShapeData.fill_vertices(buffer);
-  glEnableVertexArrayAttrib(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_ShapeData.size(), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(m_ShapeData.size()), (void*)0);
   glUnmapBuffer(GL_ARRAY_BUFFER);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndicesVBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_ShapeData.indices_count() * sizeof(GLuint), 0, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_ShapeData.index_count() * sizeof(GLuint), 0, GL_STATIC_DRAW);
   GLuint* index_buffer = static_cast<GLuint*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
   m_ShapeData.fill_indices(index_buffer);
   glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
   glBindVertexArray(0);
-
-}
-
 }
 
 
-
+}
 }

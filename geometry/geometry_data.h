@@ -8,14 +8,17 @@ namespace geometry {
   template<class DataType>
   class GeometryData {
   protected:
-    const DataType* m_Vertices;
-    const unsigned int* m_Indices;
-    virtual void init();
+    DataType* m_Vertices;
+    unsigned int* m_Indices;
+    
     virtual void init_pointers();
     virtual void init_data() = 0;
     virtual void destroy();
   public:
+    GeometryData();
     virtual ~GeometryData();
+
+    virtual void init();
     virtual unsigned int vertex_count() const = 0;
     virtual unsigned int index_count() const = 0; 
     virtual std::size_t size() const = 0;
@@ -23,6 +26,12 @@ namespace geometry {
     virtual void fill_vertices(vertex_t* data_buffer);
     virtual void fill_indices(index_t* data_buffer);
   };
+
+  template<class DataType>
+  GeometryData<DataType>::GeometryData() :
+    m_Vertices(nullptr),
+    m_Indices(nullptr) {
+  }
 
   template<class DataType>
   void GeometryData<DataType>::init() {
@@ -58,14 +67,14 @@ namespace geometry {
 
   template<class DataType>
   void GeometryData<DataType>::fill_vertices(vertex_t* data_buffer) {
-    auto data = (DataType*)data_buffer;
+    DataType* data = (DataType*)data_buffer;
     for (auto index = 0U; index < vertex_count(); ++index)
       data[index] = m_Vertices[index];
   }
 
   template<class DataType>
   void GeometryData<DataType>::fill_indices(index_t* data_buffer) {
-    auto indices = data_buffer;
+    index_t* indices = data_buffer;
     for (auto index = 0U; index < index_count(); ++index)
       data_buffer[index] = m_Indices[index];
   }

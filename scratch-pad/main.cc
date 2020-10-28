@@ -6,6 +6,8 @@
 
 #include "framework/program_support.h"
 #include "graphics/shader.h"
+#include "primative_shapes/line.h"
+#include "geometry/line.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -46,33 +48,10 @@ int main(int argc, char* argv[]) {
   glfwSetKeyCallback(window, key_callback);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-  auto vbo = 0U;
-  auto vao = 0U;
-  auto ebo = 0U;
-
-  glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
-  glGenBuffers(1, &ebo);
-
-  glBindVertexArray(vao);
-
-  float vertices[] = {
-    0.0f, -1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f
-  };
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   
-  unsigned int indices[] = { 0U, 1U };
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  auto line = sd::primative_shapes::Line();
+  line.buffer();
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
-  
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
-  
   auto shader = sd::graphics::Shader();
   glBindAttribLocation(shader.program_id(), 0, "vertex_position");
   shader.load(GL_VERTEX_SHADER, sd::framework::program_support::sd_root / "graphics" / "vertex-shader.glsl");
@@ -81,8 +60,8 @@ int main(int argc, char* argv[]) {
 
   while (!glfwWindowShouldClose(window)) {
     shader.use();
-    glBindVertexArray(vao);
-    glDrawArrays(GL_LINES, 0, 2);
+    glBindVertexArray(line.vao());
+    line.draw();
     shader.stop_use();
     glfwSwapBuffers(window);
     glfwPollEvents();

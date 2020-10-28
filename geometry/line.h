@@ -6,12 +6,8 @@
 
 namespace sd {
 namespace geometry {
-  struct LineData {
-    glm::vec3 start_point;
-    glm::vec3 end_point;
-  };
   class Line :
-    public GeometryData<LineData> {
+    public GeometryData<glm::vec3> {
   public:
     virtual void init_data();
     virtual unsigned int vertex_count() const;
@@ -31,7 +27,7 @@ namespace geometry {
 
   inline
   std::size_t Line::size() const {
-    return sizeof(LineData);
+    return sizeof(glm::vec3);
   }
 
 }
