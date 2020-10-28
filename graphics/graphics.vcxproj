@@ -84,7 +84,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -151,7 +151,7 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Tests_Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <Import Project="$(SD_ROOT)\property_sheets\graphics.props" Condition="$(graphicsPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\opengl.props" Condition="$(OpenGLPropertySheetImported) == ''" />
   <Import Project="$(SD_ROOT)\property_sheets\sd.props" Condition="$(SDPropertySheetImported) == ''" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -105,6 +105,8 @@
   <Import Project="$(SD_ROOT)\property_sheets\framework.props" Condition="$(FrameworkPropertySheetImported) == ''" />
   <Import Project="$(SD_ROOT)\property_sheets\graphics.props" Condition="$(graphicsPropertySheetImported) == ''" />
   <Import Project="$(SD_ROOT)\property_sheets\primative_shapes.props" Condition="$(primative_shapesPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\glm.props" Condition="$(glmPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\geometry.props" Condition="$(geometryPropertySheetImported) == ''" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -174,6 +176,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
