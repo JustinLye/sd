@@ -186,6 +186,7 @@
     <ClInclude Include="framework_api.h" />
     <ClInclude Include="program_support.h" />
     <ClInclude Include="resources.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program_support.cc" />
