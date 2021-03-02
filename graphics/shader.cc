@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include <glm/gtc/type_ptr.hpp>
+#include "utility.h"
 
 namespace sd {
 namespace graphics {
@@ -14,16 +16,16 @@ namespace graphics {
 		m_ProgramId(0U) {}
 
 	void Shader::load(const GLenum& shader_type, const char* source) {
-		auto shader_id = glCreateShader(shader_type);
+		auto shader_id = OpenGLErrorWrapper(glCreateShader(shader_type));
 		m_ShaderIds[shader_type] = shader_id;
-		glShaderSource(shader_id, 1, &source, NULL);
-		glCompileShader(shader_id);
+		OpenGLErrorWrapper(glShaderSource(shader_id, 1, &source, NULL));
+		OpenGLErrorWrapper(glCompileShader(shader_id));
 		GLint shader_compiled = 0;
-		glGetShaderiv(m_ShaderIds[shader_type], GL_COMPILE_STATUS, &shader_compiled);
+		OpenGLErrorWrapper(glGetShaderiv(m_ShaderIds[shader_type], GL_COMPILE_STATUS, &shader_compiled));
 		if (shader_compiled == GL_FALSE) {
 			GLsizei log_length = 0;
 			GLchar message[1024];
-			glGetShaderInfoLog(shader_id, 1024, &log_length, message);
+			OpenGLErrorWrapper(glGetShaderInfoLog(shader_id, 1024, &log_length, message));
 			throw std::runtime_error(message);
 		}
 		auto uniform_names = get_uniform_variable_names(source);
@@ -55,30 +57,30 @@ namespace graphics {
 
 	GLuint Shader::program_id() const {
 		if (m_ProgramId == 0)
-			m_ProgramId = glCreateProgram();
+			m_ProgramId = OpenGLErrorWrapper(glCreateProgram());
 		return m_ProgramId;
 	}
 
 	void Shader::link() {
 		auto id = program_id();
 		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds),
-			[this, id](auto shader_id) { glAttachShader(id, shader_id.second); });
+			[this, id](auto shader_id) { OpenGLErrorWrapper(glAttachShader(id, shader_id.second)); });
 		auto link_status = link_program(id);
 		if (!link_status) {
 			auto info_log = get_program_info_log(id);
 			std::cerr << "Failed to link program: " << info_log << std::endl;
 		}
 		std::for_each(std::begin(m_ShaderIds), std::end(m_ShaderIds),
-			[this](auto shader_id) { glDeleteShader(shader_id.second); });
+			[this](auto shader_id) { OpenGLErrorWrapper(glDeleteShader(shader_id.second)); });
 		m_ShaderIds.clear();
 	}
 
 	void Shader::use() const {
-		glUseProgram(program_id());
+		OpenGLErrorWrapper(glUseProgram(program_id()));
 	}
 
 	void Shader::stop_use() const {
-		glUseProgram(0);
+		OpenGLErrorWrapper(glUseProgram(0));
 	}
 
 	GLint Shader::uniform(const char* name) {
@@ -161,6 +163,14 @@ namespace graphics {
 
 	GLint Shader::uniform(GLuint program_id, const std::string& name) {
 		return uniform(program_id, name.c_str());
+	}
+
+	void Shader::UniformMat4(const char* name, const glm::mat4& value) {
+		Shader::UniformMat4(program_id(), name, value);
+	}
+
+	void Shader::UniformMat4(GLuint program_id, const char* name, const glm::mat4& value) {
+		glUniformMatrix4fv(uniform(program_id, name), 1, GL_FALSE, glm::value_ptr(value));
 	}
 }
 }

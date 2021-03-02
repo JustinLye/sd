@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -153,6 +153,7 @@
   </ImportGroup>
   <Import Project="$(SD_ROOT)\property_sheets\opengl.props" Condition="$(OpenGLPropertySheetImported) == ''" />
   <Import Project="$(SD_ROOT)\property_sheets\sd.props" Condition="$(SDPropertySheetImported) == ''" />
+  <Import Project="$(SD_ROOT)\property_sheets\glm.props" Condition="$(glmPropertySheetImported) == ''" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -339,16 +340,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="buffer.cc" />
     <ClCompile Include="shader.cc" />
+    <ClCompile Include="vertex_array_object.cc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment-shader.glsl" />
     <None Include="vertex-shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="buffer.h" />
     <ClInclude Include="drawable_object.h" />
     <ClInclude Include="graphics_api.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="utility.h" />
+    <ClInclude Include="vertex_array_object.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

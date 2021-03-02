@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "framework", "framework\framework.vcxproj", "{D793A076-FC96-482C-AF65-C4A72FAE468A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "framework_unit_tests", "unit_tests\framework_unit_tests\framework_unit_tests.vcxproj", "{DAEC7EE2-EB40-4924-80FE-7B555D8DCF49}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D793A076-FC96-482C-AF65-C4A72FAE468A} = {D793A076-FC96-482C-AF65-C4A72FAE468A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "property_sheets", "property_sheets\property_sheets.vcxproj", "{898406EA-5BBC-40DC-9DD8-5CA670AA4500}"
 EndProject
@@ -20,6 +23,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scratch-pad", "scratch-pad\
 		{6D842145-2ABB-4693-B9F7-BD0D7C6B8336} = {6D842145-2ABB-4693-B9F7-BD0D7C6B8336}
 		{78922160-BFC3-46D6-9BC4-B2103843D042} = {78922160-BFC3-46D6-9BC4-B2103843D042}
 		{D793A076-FC96-482C-AF65-C4A72FAE468A} = {D793A076-FC96-482C-AF65-C4A72FAE468A}
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E} = {BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "geometry\geometry.vcxproj", "{18DA983E-1B39-4286-A71C-6AC883371FB8}"
@@ -30,6 +34,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "primative_shapes", "primati
 	ProjectSection(ProjectDependencies) = postProject
 		{18DA983E-1B39-4286-A71C-6AC883371FB8} = {18DA983E-1B39-4286-A71C-6AC883371FB8}
 		{78922160-BFC3-46D6-9BC4-B2103843D042} = {78922160-BFC3-46D6-9BC4-B2103843D042}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "input", "input\input.vcxproj", "{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "input_unit_tests", "unit_tests\input_unit_tests\input_unit_tests.vcxproj", "{28344354-3D80-4765-93EC-0DA13F73AC11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E} = {BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}
 	EndProjectSection
 EndProject
 Global
@@ -185,6 +196,46 @@ Global
 		{6D842145-2ABB-4693-B9F7-BD0D7C6B8336}.Tests_Release|x64.Build.0 = Release|x64
 		{6D842145-2ABB-4693-B9F7-BD0D7C6B8336}.Tests_Release|x86.ActiveCfg = Release|Win32
 		{6D842145-2ABB-4693-B9F7-BD0D7C6B8336}.Tests_Release|x86.Build.0 = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Debug|x64.ActiveCfg = Debug|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Debug|x64.Build.0 = Debug|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Debug|x86.Build.0 = Debug|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Release|x64.ActiveCfg = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Release|x64.Build.0 = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Release|x86.ActiveCfg = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Release|x86.Build.0 = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Static_Release|x64.ActiveCfg = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Static_Release|x64.Build.0 = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Static_Release|x86.ActiveCfg = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Static_Release|x86.Build.0 = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Debug|x64.ActiveCfg = Debug|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Debug|x64.Build.0 = Debug|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Debug|x86.ActiveCfg = Debug|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Debug|x86.Build.0 = Debug|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Release|x64.ActiveCfg = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Release|x64.Build.0 = Release|x64
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Release|x86.ActiveCfg = Release|Win32
+		{BD0279DC-BA2E-49B5-841B-9FC6F18B9F8E}.Tests_Release|x86.Build.0 = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Debug|x64.ActiveCfg = Debug|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Debug|x64.Build.0 = Debug|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Debug|x86.ActiveCfg = Debug|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Debug|x86.Build.0 = Debug|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Release|x64.ActiveCfg = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Release|x64.Build.0 = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Release|x86.ActiveCfg = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Release|x86.Build.0 = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Static_Release|x64.ActiveCfg = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Static_Release|x64.Build.0 = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Static_Release|x86.ActiveCfg = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Static_Release|x86.Build.0 = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Debug|x64.ActiveCfg = Debug|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Debug|x64.Build.0 = Debug|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Debug|x86.ActiveCfg = Debug|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Debug|x86.Build.0 = Debug|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Release|x64.ActiveCfg = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Release|x64.Build.0 = Release|x64
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Release|x86.ActiveCfg = Release|Win32
+		{28344354-3D80-4765-93EC-0DA13F73AC11}.Tests_Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

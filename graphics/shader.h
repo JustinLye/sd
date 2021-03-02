@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include "graphics/graphics_api.h"
 
@@ -31,6 +32,8 @@ namespace graphics {
 
 		virtual GLuint program_id() const;
 
+		virtual void UniformMat4(const char* name, const glm::mat4& value);
+
 		static bool link_program(GLuint program_id);
 		static bool link_status(GLuint program_id);
 		static GLint get_info_log_length(GLuint program_id);
@@ -41,6 +44,7 @@ namespace graphics {
 		static std::vector<std::string> get_uniform_variable_names(const std::filesystem::path& source);
 		static GLint uniform(GLuint program_id, const char* name);
 		static GLint uniform(GLuint program_id, const std::string& name);
+		static void UniformMat4(GLuint program_id, const char* name, const glm::mat4& value);
 
 	};
 } // namespace graphics

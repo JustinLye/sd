@@ -18,6 +18,12 @@
     <ClCompile Include="shader.cc">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="buffer.cc">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="vertex_array_object.cc">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex-shader.glsl">
@@ -35,6 +41,15 @@
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="drawable_object.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex_array_object.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

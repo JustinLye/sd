@@ -6,19 +6,26 @@ namespace sd {
 namespace framework {
 namespace util {
 namespace containers {
-  template<class T>
-  void fill(std::vector<T>& out_vec, const T* input_array, std::size_t count) {
-    out_vec.clear();
-    out_vec.resize(count);
-    auto index = 0U;
-    std::generate_n(
-      std::begin(out_vec),
-      count,
-      [input_array, &index]() {
-        return input_array[index++];
-      });
-  }
+template<class T>
+void fill(std::vector<T>& out_vec, const T* input_array, std::size_t count) {
+  out_vec.clear();
+  out_vec.resize(count);
+  auto index = 0U;
+  std::generate_n(
+    std::begin(out_vec),
+    count,
+    [input_array, &index]() {
+      return input_array[index++];
+    });
 }
-}
-}
-}
+} // containers
+
+#if defined(_DEBUG)
+#define debug_message(msg) std::cout << msg << std::endl;
+#else
+#define debug_message(msg) 
+#endif
+
+} // util
+} // framework
+} // sd

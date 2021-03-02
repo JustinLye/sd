@@ -333,6 +333,7 @@
     <None Include="glfw.props" />
     <None Include="glm.props" />
     <None Include="graphics.props" />
+    <None Include="input.props" />
     <None Include="opengl.props" />
     <None Include="gtest.props" />
     <None Include="primative_shapes.props" />

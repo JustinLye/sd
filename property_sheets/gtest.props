@@ -8,8 +8,10 @@
       <AdditionalIncludeDirectories>$(THIRDPARTY_ROOT)/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(THIRDPARTY_ROOT)/googletest/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gmock.lib;gmock_main.lib;gtest.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Debug'">$(THIRDPARTY_ROOT)/googletest/lib/Dynamic_Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Release'">$(THIRDPARTY_ROOT)/googletest/lib/Dynamic_Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Static_Debug'">gmockd.lib;gmock_maind.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release'">gmock.lib;gmock_main.lib;gtest.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 </Project>

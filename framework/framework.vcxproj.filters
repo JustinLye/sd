@@ -9,9 +9,23 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Header Files\workers">
+      <UniqueIdentifier>{3b053789-1f07-4cbf-a02c-72c7127daecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\work_items">
+      <UniqueIdentifier>{aef86203-b808-4fae-b6a4-46c12138d709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\workers">
+      <UniqueIdentifier>{c4e6c2da-6a92-477f-8c03-d39ebb966947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\work_items">
+      <UniqueIdentifier>{e1e309bb-9646-4f5b-b4d7-e2809deb7213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\notifications">
+      <UniqueIdentifier>{32fa0fbb-b8e6-4d6f-871f-eb361e97a839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\meta">
+      <UniqueIdentifier>{1b51f1f2-fb12-45b2-b52f-10d43fa02827}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,10 +47,97 @@
     <ClInclude Include="utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="noncopyable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shutdown_worker.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="base_work_item.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="delayed_work_item.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="worker.h">
+      <Filter>Header Files\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="pool_worker.h">
+      <Filter>Header Files\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="work_queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="worker_pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="subject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="work_started.h">
+      <Filter>Header Files\notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="work_completed.h">
+      <Filter>Header Files\notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="worker_notification.h">
+      <Filter>Header Files\notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="has_type_member.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="is_worker_notification.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="notifications.h">
+      <Filter>Header Files\notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="work_items.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="workers.h">
+      <Filter>Header Files\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="empty_work_item.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program_support.cc">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shutdown_worker.cc">
+      <Filter>Source Files\work_items</Filter>
+    </ClCompile>
+    <ClCompile Include="worker.cc">
+      <Filter>Source Files\workers</Filter>
+    </ClCompile>
+    <ClCompile Include="work_queue.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="worker_pool.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="observer.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="subject.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pool_worker.cc">
+      <Filter>Source Files\workers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
