@@ -10,7 +10,6 @@ namespace work_items {
 namespace detail {
 class BaseWorkItem {
 private:
-  std::promise<ItemStatus> m_Promise;
   ItemStatus m_ItemStatus;
 protected:
   virtual void do_work_impl() = 0;
@@ -19,9 +18,9 @@ protected:
   virtual void status(const ItemStatus& status);
   virtual void status(ItemStatusCode status);
 public:
-  BaseWorkItem(std::promise<ItemStatus>&& item_status);
+  BaseWorkItem();
   BaseWorkItem(BaseWorkItem&& other) noexcept;
-  BaseWorkItem(const BaseWorkItem&) = delete;
+  BaseWorkItem(const BaseWorkItem&);
   virtual ~BaseWorkItem();
   void do_work();
 
@@ -36,7 +35,6 @@ void BaseWorkItem::pre_work() {
 inline
 void BaseWorkItem::post_work() {
   m_ItemStatus = ItemStatusCode::kComplete;
-  m_Promise.set_value(m_ItemStatus);
 }
 
 inline
@@ -50,14 +48,16 @@ void BaseWorkItem::status(ItemStatusCode status) {
 }
 
 inline
-BaseWorkItem::BaseWorkItem(std::promise<ItemStatus>&& item_status) :
-  m_ItemStatus(ItemStatusCode::kIncomplete),
-  m_Promise(std::move(item_status)) {}
+BaseWorkItem::BaseWorkItem() :
+  m_ItemStatus(ItemStatusCode::kIncomplete) {}
 
 inline
 BaseWorkItem::BaseWorkItem(BaseWorkItem&& other) noexcept :
-  m_ItemStatus(std::move(other.m_ItemStatus)),
-  m_Promise(std::move(other.m_Promise)) {}
+  m_ItemStatus(std::move(other.m_ItemStatus)) {}
+
+inline
+BaseWorkItem::BaseWorkItem(const BaseWorkItem& other) :
+  m_ItemStatus(other.m_ItemStatus) {}
 
 inline
 BaseWorkItem::~BaseWorkItem() {}

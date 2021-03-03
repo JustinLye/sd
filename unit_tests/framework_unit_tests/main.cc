@@ -110,8 +110,8 @@ protected:
 		std::cout << "dummy work item" << std::endl;
 	}
 public:
-	DummyWorkItem(std::promise<sd::framework::work_items::ItemStatus>&& p) :
-		sd::framework::work_items::BaseWorkItem(std::move(p)) {}
+	DummyWorkItem() :
+		sd::framework::work_items::BaseWorkItem() {}
 };
 
 TEST(WorkerPool, WorkQueue) {
@@ -119,16 +119,14 @@ TEST(WorkerPool, WorkQueue) {
 	auto queue = std::shared_ptr<containers::WorkQueue>(new containers::WorkQueue());
 	sd::framework::workers::Worker worker(queue);
 	worker.start();
-	std::promise<work_items::ItemStatus> p;
-	std::promise<work_items::ItemStatus> p1;
-	auto f = p.get_future();
-	auto f1 = p1.get_future();
-	auto work_item = std::shared_ptr<work_items::NoOp>(new work_items::NoOp(std::move(p)));
-	auto work_item1 = std::shared_ptr<DummyWorkItem>(new DummyWorkItem(std::move(p1)));
-	queue->push_work(work_item);
-	queue->push_work(work_item1);
+	auto work_item = std::shared_ptr<work_items::NoOp>(new work_items::NoOp());
+	auto work_item1 = std::shared_ptr<DummyWorkItem>(new DummyWorkItem());
+	auto f = queue->push_work(work_item);
+	auto f1 = queue->push_work(work_item1);
 	f.wait();
+	f1.wait();
 	EXPECT_EQ(f.get(), work_items::ItemStatusCode::kComplete);
+	EXPECT_EQ(f1.get(), work_items::ItemStatusCode::kComplete);
 	EXPECT_TRUE(queue->empty());
 	worker.stop();
 	queue->unblock();

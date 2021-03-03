@@ -12,9 +12,9 @@ class NoOp :
 protected:
   void do_work_impl() override;
 public:
-  NoOp(std::promise<ItemStatus>&& item_status);
+  NoOp();
   NoOp(NoOp&& other) noexcept;
-  NoOp(const NoOp&) = delete;
+  NoOp(const NoOp&);
 
 };
 
@@ -22,12 +22,16 @@ inline
 void NoOp::do_work_impl() {}
 
 inline
-NoOp::NoOp(std::promise<ItemStatus>&& item_status) :
-  BaseWorkItem(std::move(item_status)) {}
+NoOp::NoOp() :
+  BaseWorkItem() {}
 
 inline
 NoOp::NoOp(NoOp&& other) noexcept :
   BaseWorkItem(std::move(other)) {}
+
+inline
+NoOp::NoOp(const NoOp& other) :
+  BaseWorkItem(other) {}
 
 
 } // detail

@@ -9,11 +9,13 @@ namespace detail {
 
 void Worker::work_loop() {
   while (!m_ExitWorkLoop || !m_WorkQueue->empty()) {
-    auto work_item = m_WorkQueue->get_work();
-    if (work_item.get() != nullptr)
+    auto queued_item = m_WorkQueue->get_work();
+    if (queued_item.get() != nullptr)
     {
+      auto work_item = queued_item->work();
       assert(work_item->status() == work_items::ItemStatusCode::kIncomplete);
       do_work(work_item);
+      queued_item->set_value(work_item->status());
     }
   }
 }
