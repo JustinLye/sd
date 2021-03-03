@@ -1,13 +1,7 @@
 #pragma once
-#include "meta.h"
-#include "notifications.h"
-#include "work_items.h"
-#include "workers.h"
 #include "observer.h"
 #include "subject.h"
 #include "timer.h"
-#include "work_queue.h"
-#include "worker_pool.h"
 #include "noncopyable.h"
 #include "argtype.h"
 #include "callback.h"

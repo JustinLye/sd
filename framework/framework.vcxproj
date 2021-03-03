@@ -183,42 +183,20 @@
   <ItemGroup>
     <ClInclude Include="argtype.h" />
     <ClInclude Include="callback.h" />
-    <ClInclude Include="delayed_work_item.h" />
-    <ClInclude Include="empty_work_item.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="framework_api.h" />
-    <ClInclude Include="has_type_member.h" />
-    <ClInclude Include="is_worker_notification.h" />
-    <ClInclude Include="meta.h" />
     <ClInclude Include="noncopyable.h" />
-    <ClInclude Include="notifications.h" />
     <ClInclude Include="observer.h" />
-    <ClInclude Include="pool_worker.h" />
     <ClInclude Include="program_support.h" />
     <ClInclude Include="resources.h" />
-    <ClInclude Include="shutdown_worker.h" />
     <ClInclude Include="subject.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="utility.h" />
-    <ClInclude Include="worker.h" />
-    <ClInclude Include="base_work_item.h" />
-    <ClInclude Include="workers.h" />
-    <ClInclude Include="worker_pool.h" />
-    <ClInclude Include="work_completed.h" />
-    <ClInclude Include="worker_notification.h" />
-    <ClInclude Include="work_items.h" />
-    <ClInclude Include="work_queue.h" />
-    <ClInclude Include="work_started.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="observer.cc" />
-    <ClCompile Include="pool_worker.cc" />
     <ClCompile Include="program_support.cc" />
-    <ClCompile Include="shutdown_worker.cc" />
     <ClCompile Include="subject.cc" />
-    <ClCompile Include="worker.cc" />
-    <ClCompile Include="worker_pool.cc" />
-    <ClCompile Include="work_queue.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

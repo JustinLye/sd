@@ -53,81 +53,18 @@
     <ClInclude Include="noncopyable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shutdown_worker.h">
-      <Filter>Header Files\work_items</Filter>
-    </ClInclude>
-    <ClInclude Include="base_work_item.h">
-      <Filter>Header Files\work_items</Filter>
-    </ClInclude>
-    <ClInclude Include="delayed_work_item.h">
-      <Filter>Header Files\work_items</Filter>
-    </ClInclude>
-    <ClInclude Include="worker.h">
-      <Filter>Header Files\workers</Filter>
-    </ClInclude>
-    <ClInclude Include="pool_worker.h">
-      <Filter>Header Files\workers</Filter>
-    </ClInclude>
-    <ClInclude Include="work_queue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="worker_pool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="work_started.h">
-      <Filter>Header Files\notifications</Filter>
-    </ClInclude>
-    <ClInclude Include="work_completed.h">
-      <Filter>Header Files\notifications</Filter>
-    </ClInclude>
-    <ClInclude Include="worker_notification.h">
-      <Filter>Header Files\notifications</Filter>
-    </ClInclude>
-    <ClInclude Include="has_type_member.h">
-      <Filter>Header Files\meta</Filter>
-    </ClInclude>
-    <ClInclude Include="is_worker_notification.h">
-      <Filter>Header Files\meta</Filter>
-    </ClInclude>
-    <ClInclude Include="meta.h">
-      <Filter>Header Files\meta</Filter>
-    </ClInclude>
-    <ClInclude Include="notifications.h">
-      <Filter>Header Files\notifications</Filter>
-    </ClInclude>
-    <ClInclude Include="work_items.h">
-      <Filter>Header Files\work_items</Filter>
-    </ClInclude>
-    <ClInclude Include="workers.h">
-      <Filter>Header Files\workers</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="empty_work_item.h">
-      <Filter>Header Files\work_items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program_support.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shutdown_worker.cc">
-      <Filter>Source Files\work_items</Filter>
-    </ClCompile>
-    <ClCompile Include="worker.cc">
-      <Filter>Source Files\workers</Filter>
-    </ClCompile>
-    <ClCompile Include="work_queue.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="worker_pool.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="observer.cc">
@@ -135,9 +72,6 @@
     </ClCompile>
     <ClCompile Include="subject.cc">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pool_worker.cc">
-      <Filter>Source Files\workers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
