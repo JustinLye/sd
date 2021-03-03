@@ -9,3 +9,6 @@
 #include "program_support.h"
 #include "resources.h"
 #include "utility.h"
+#include "work_items.h"
+#include "workers.h"
+#include "containers.h"

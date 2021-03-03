@@ -103,6 +103,39 @@ TEST_F(ArgTypeTest, TrivalTest3) {
 	EXPECT_EQ(GetArgType<IntArgs>::value, sd::framework::argtype::argtype::INT_ARG);
 }
 
+class DummyWorkItem :
+	public sd::framework::work_items::BaseWorkItem {
+protected:
+	void do_work_impl() override {
+		std::cout << "dummy work item" << std::endl;
+	}
+public:
+	DummyWorkItem(std::promise<sd::framework::work_items::ItemStatus>&& p) :
+		sd::framework::work_items::BaseWorkItem(std::move(p)) {}
+};
+
+TEST(WorkerPool, WorkQueue) {
+	using namespace sd::framework;
+	auto queue = std::shared_ptr<containers::WorkQueue>(new containers::WorkQueue());
+	sd::framework::workers::Worker worker(queue);
+	worker.start();
+	std::promise<work_items::ItemStatus> p;
+	std::promise<work_items::ItemStatus> p1;
+	auto f = p.get_future();
+	auto f1 = p1.get_future();
+	auto work_item = std::shared_ptr<work_items::NoOp>(new work_items::NoOp(std::move(p)));
+	auto work_item1 = std::shared_ptr<DummyWorkItem>(new DummyWorkItem(std::move(p1)));
+	queue->push_work(work_item);
+	queue->push_work(work_item1);
+	f.wait();
+	EXPECT_EQ(f.get(), work_items::ItemStatusCode::kComplete);
+	EXPECT_TRUE(queue->empty());
+	worker.stop();
+	queue->unblock();
+	worker.join();
+
+
+}
 
 
 int main(int argc, char* argv[]) {

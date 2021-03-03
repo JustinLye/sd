@@ -182,21 +182,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="argtype.h" />
+    <ClInclude Include="base_work_item.h" />
     <ClInclude Include="callback.h" />
+    <ClInclude Include="containers.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="framework_api.h" />
+    <ClInclude Include="item_status.h" />
     <ClInclude Include="noncopyable.h" />
+    <ClInclude Include="no_op.h" />
     <ClInclude Include="observer.h" />
     <ClInclude Include="program_support.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="subject.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="worker.h" />
+    <ClInclude Include="workers.h" />
+    <ClInclude Include="work_items.h" />
+    <ClInclude Include="work_queue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="observer.cc" />
     <ClCompile Include="program_support.cc" />
     <ClCompile Include="subject.cc" />
+    <ClCompile Include="worker.cc" />
+    <ClCompile Include="work_queue.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,12 @@
     <Filter Include="Header Files\meta">
       <UniqueIdentifier>{1b51f1f2-fb12-45b2-b52f-10d43fa02827}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\containers">
+      <UniqueIdentifier>{12358ef7-81d9-47d3-995d-be3856abd39e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\containers">
+      <UniqueIdentifier>{e22098f0-6bd3-4f79-97ad-544b8e520e9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callback.h">
@@ -62,6 +68,30 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="base_work_item.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="item_status.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="work_items.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="no_op.h">
+      <Filter>Header Files\work_items</Filter>
+    </ClInclude>
+    <ClInclude Include="work_queue.h">
+      <Filter>Header Files\containers</Filter>
+    </ClInclude>
+    <ClInclude Include="worker.h">
+      <Filter>Header Files\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="workers.h">
+      <Filter>Header Files\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="containers.h">
+      <Filter>Header Files\containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="program_support.cc">
@@ -72,6 +102,12 @@
     </ClCompile>
     <ClCompile Include="subject.cc">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="work_queue.cc">
+      <Filter>Source Files\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="worker.cc">
+      <Filter>Source Files\workers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
