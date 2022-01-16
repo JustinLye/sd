@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 add_executable(sd sd.cc)
-add_dependencies(sd glad glfw)
-target_link_libraries(sd PRIVATE glad glfw)
+set_target_properties(sd PROPERTIES CXX_STANDARD 20)
+add_dependencies(sd libsd)
+target_link_libraries(sd PRIVATE libsd)
 target_compile_definitions(sd PRIVATE GLFW_INCLUDE_NONE)
