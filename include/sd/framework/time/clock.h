@@ -20,6 +20,9 @@ namespace time {
         void Stop();
         void Reset();
 
+        inline bool HasStarted() const noexcept;
+        inline bool IsStopped() const noexcept;
+
         double Elapsed() const noexcept;
 
         using duration_type = std::chrono::duration<double, std::chrono::seconds::period>;
@@ -33,5 +36,13 @@ namespace time {
         std::chrono::high_resolution_clock::duration m_DurationWhenStopped;
         mutable std::mutex m_ClockMutex;
     };
+
+    bool Clock::HasStarted() const noexcept {
+        return m_HasStarted;
+    }
+
+    bool Clock::IsStopped() const noexcept {
+        return m_IsStopped;
+    }
 
 }}}
