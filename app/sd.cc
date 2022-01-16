@@ -1,5 +1,5 @@
 #include <iostream>
-#include <memory>
+#include <thread>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -18,18 +18,21 @@ int main(int argc, char* argv[]) {
     } else {
         std::cout << "World initialized." << std::endl;
     }
+    
+    double last_frame_time = 0;
+    glfwSetTime(last_frame_time);
     while (!glfwWindowShouldClose(world->Window())) {
         int width = 0;
         int height = 0;
         glfwGetFramebufferSize(world->Window(), &width, &height);
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
+        auto current_elapsed_time = glfwGetTime();
         world->Update(0);
         glfwSwapBuffers(world->Window());
         glfwPollEvents();
     }
     glfwDestroyWindow(world->Window());
     glfwTerminate();
-
     return 0;
 }
