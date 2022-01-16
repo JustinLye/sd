@@ -5,8 +5,11 @@
 #include <GLFW/glfw3.h>
 
 #include "sd/gameplay/world.h"
+#include "sd/framework/logging/logger.h"
 
 int main(int argc, char* argv[]) {
+    sd::framework::logging::Logger logger("sd.log");
+
 #if defined(_DEBUG)
     char c;
     std::cout << "press any key to continue: ";
@@ -14,9 +17,9 @@ int main(int argc, char* argv[]) {
 #endif
     auto world = std::make_shared<sd::gameplay::World>();
     if (!world->Initialize()) {
-        std::cerr << "Error! World Failed to Initialize." << std::endl;
+        logger << "Error! World Failed to Initialize." << std::endl;
     } else {
-        std::cout << "World initialized." << std::endl;
+        logger << "World initialized." << std::endl;
     }
     
     double last_frame_time = 0;
