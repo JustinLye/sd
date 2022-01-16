@@ -1,5 +1,6 @@
 #pragma
 
+#include <memory>
 #include <vector>
 
 #include "sd/framework/input/key_tracker.h"
@@ -17,9 +18,12 @@ namespace gameplay {
         GLFWwindow* Window() const;
         virtual void Update(double dt) override;
     private:
-        sd::framework::input::KeyTracker m_KeyTracker;
+        std::shared_ptr<sd::framework::input::KeyTracker> m_KeyTracker;
         GLFWwindow* m_Window;
-        std::vector<IComponent*> m_Components;
+        std::vector<std::shared_ptr<sd::framework::interfaces::IComponent>> m_Components;
+
+        bool InitializeInput();
+
     };
 
 }}

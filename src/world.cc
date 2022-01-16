@@ -5,12 +5,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "sd/framework/input/key_state_type.h"
+
 namespace sd {
 namespace gameplay {
 
     World::World() :
         sd::framework::interfaces::IComponent(),
-        m_KeyTracker(),
+        m_KeyTracker(nullptr),
         m_Window(nullptr),
         m_Components() {}
 
@@ -23,22 +25,22 @@ namespace gameplay {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-        auto window = glfwCreateWindow(600, 800, "sd", nullptr, nullptr);
-        if (!window) {
+        m_Window = glfwCreateWindow(600, 800, "sd", nullptr, nullptr);
+        if (!m_Window) {
             std::cerr << "Error! Failed to create window." << std::endl;
             glfwTerminate();
             return false;
         }
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(m_Window);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cerr << "Error! Failed to load OpenGL." << std::endl;
             return false;
         }
 
-        m_Components.push_back(&m_KeyTracker);
+        auto result = InitializeInput();
 
-        return true;
+        return result;
     }
 
     GLFWwindow* World::Window() const {
@@ -46,9 +48,25 @@ namespace gameplay {
     }
 
     void World::Update(double dt) {
+        m_KeyTracker->Update(dt);
+        using key_state_t = framework::input::key_state_t;
+        switch ((*m_KeyTracker)[GLFW_KEY_ESCAPE].state) {
+        case key_state_t::pressed:
+        case key_state_t::down:
+            glfwSetWindowShouldClose(m_Window, GLFW_TRUE);
+            break;
+        }
+
         for (auto c : m_Components) {
             c->Update(dt);
         }
+    }
+
+    bool World::InitializeInput() {
+        m_KeyTracker = std::make_shared<framework::input::KeyTracker>();
+        m_KeyTracker->Initialize(m_Window);
+        m_KeyTracker->Track(GLFW_KEY_ESCAPE);
+        return true;
     }
 
 }}
