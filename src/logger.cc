@@ -7,25 +7,13 @@ namespace framework {
 namespace logging {
 
     Logger::Logger() :
-        m_OutputStream(std::cout),
+        m_Channels(),
         m_LoggerMutex(),
         m_MessageQueue(),
         m_MessageReady(),
         m_Stop(false),
         m_LoggingLoop(),
-        m_FileStream(nullptr) {
-        m_LoggingLoop = std::move(std::async(std::launch::async, &Logger::LoggingLoop, std::ref(*this)));
-    }
-
-    Logger::Logger(const std::filesystem::path& file_path) :
-        m_OutputStream(std::cout),
-        m_LoggerMutex(),
-        m_MessageQueue(),
-        m_MessageReady(),
-        m_Stop(false),
-        m_LoggingLoop(),
-        m_FileStream(std::make_shared<std::ofstream>(file_path)) {
-        m_OutputStream.set_rdbuf(m_FileStream->rdbuf());
+        m_LogLevel(log_level_t::info) {
         m_LoggingLoop = std::move(std::async(std::launch::async, &Logger::LoggingLoop, std::ref(*this)));
     }
 
@@ -34,10 +22,25 @@ namespace logging {
             m_Stop = true;
             m_MessageReady.notify_all();
             m_LoggingLoop.wait();
-            if (m_FileStream) {
-                m_FileStream->close();
+            for (auto channel : m_Channels) {
+                if (channel.stream) {
+                    auto file_stream = dynamic_cast<std::ofstream*>(channel.stream.get());
+                    if (file_stream) {
+                        file_stream->close();
+                    }
+                }
+
             }
+
         } catch (...) {}
+    }
+
+    void Logger::AddChannel(const std::ostream& stream, log_level_t level) {
+        m_Channels.push_back({ level, std::make_shared<std::ostream>(stream.rdbuf())});
+    }
+
+    void Logger::AddChannel(const std::filesystem::path& path, log_level_t level) {
+        m_Channels.push_back({ level, std::make_shared<std::ofstream>(path)});
     }
 
     void Logger::LoggingLoop() {

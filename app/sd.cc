@@ -8,7 +8,6 @@
 #include "sd/framework/logging/logger.h"
 
 int main(int argc, char* argv[]) {
-    sd::framework::logging::Logger logger("sd.log");
 
 #if defined(_DEBUG)
     char c;
@@ -17,9 +16,7 @@ int main(int argc, char* argv[]) {
 #endif
     auto world = std::make_shared<sd::gameplay::World>();
     if (!world->Initialize()) {
-        logger << "Error! World Failed to Initialize." << std::endl;
     } else {
-        logger << "World initialized." << std::endl;
     }
     
     double last_frame_time = 0;

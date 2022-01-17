@@ -7,6 +7,10 @@
 #include <queue>
 #include <sstream>
 #include <thread>
+#include <vector>
+
+#include "sd/framework/logging/channel.h"
+#include "sd/framework/logging/log_level_t.h"
 
 namespace sd {
 namespace framework {
@@ -17,8 +21,13 @@ namespace logging {
         typedef std::basic_ostream<char, std::char_traits<char>>& (*manip_func_t)(std::basic_ostream<char, std::char_traits<char>>&);
 
         Logger();
-        Logger(const std::filesystem::path& file_path);
         ~Logger();
+
+        void AddChannel(const std::ostream& stream, log_level_t level = log_level_t::info);
+        void AddChannel(const std::filesystem::path& path, log_level_t level = log_level_t::info);
+
+        inline log_level_t LogLevel() const noexcept;
+        inline void LogLevel(log_level_t level);
 
         template<class T>
         Logger& operator<<(const T& message);
@@ -33,9 +42,9 @@ namespace logging {
 
             virtual void Log() = 0;
         protected:
-            inline std::ostream& Stream();
+            inline std::shared_ptr<std::ostream> Stream();
         private:
-            std::ostream& m_Stream;
+            std::shared_ptr<std::ostream> m_Stream;
         };
 
         template<class T>
@@ -66,23 +75,26 @@ namespace logging {
         inline
         void Log(manip_func_t manip_func);
 
+        inline
+        void Log(log_level_t level);
+
         void LoggingLoop();
 
         std::shared_ptr<LoggingAction> GetNextLoggingAction();
 
-        std::ostream& m_OutputStream;
+        std::vector<Channel> m_Channels;
         std::mutex m_LoggerMutex;
         std::queue<std::shared_ptr<LoggingAction>> m_MessageQueue;
         std::condition_variable m_MessageReady;
         bool m_Stop;
         std::future<void> m_LoggingLoop;
-        std::shared_ptr<std::ofstream> m_FileStream;
+        log_level_t m_LogLevel;
     };
 
     Logger::LoggingAction::LoggingAction(std::ostream& stream) :
-        m_Stream(stream) {}
+        m_Stream(std::make_shared<std::ostream>(stream.rdbuf())) {}
 
-    std::ostream& Logger::LoggingAction::Stream() {
+    std::shared_ptr<std::ostream> Logger::LoggingAction::Stream() {
         return m_Stream;
     }
 
@@ -93,7 +105,10 @@ namespace logging {
 
     template<class T>
     void Logger::LogMessageAction<T>::Log() {
-        Stream() << m_Message;
+        auto s = Stream();
+        if (s) {
+            (*s) << m_Message;
+        }
     }
 
     Logger::LogManipAction::LogManipAction(std::ostream& stream, manip_func_t manip_func) :
@@ -101,22 +116,49 @@ namespace logging {
         m_ManipFunc(manip_func) {}
 
     void Logger::LogManipAction::Log() {
-        m_ManipFunc(Stream());
+        auto s = Stream();
+        if (s) {
+            m_ManipFunc(*s);
+        }
     }
 
     template<class T>
     void Logger::Log(const T& message) {
         std::unique_lock<std::mutex> locker(m_LoggerMutex);
-        auto action = std::shared_ptr<Logger::LoggingAction>(new Logger::LogMessageAction(m_OutputStream, message));
-        m_MessageQueue.push(action);
+        for (auto channel : m_Channels) {
+            if (!channel.stream || channel.log_level > m_LogLevel) {
+                continue;
+            }
+            auto action = std::shared_ptr<Logger::LoggingAction>(new Logger::LogMessageAction(*(channel.stream), message));
+            m_MessageQueue.push(action);
+        }
+
         m_MessageReady.notify_all();
     }
 
     void Logger::Log(manip_func_t manip_func) {
         std::unique_lock<std::mutex> locker(m_LoggerMutex);
-        auto action = std::shared_ptr<Logger::LoggingAction>(new Logger::LogManipAction(m_OutputStream, manip_func));
-        m_MessageQueue.push(action);
+        for (auto channel : m_Channels) {
+            if (!channel.stream || channel.log_level > m_LogLevel) {
+                continue;
+            }
+            auto action = std::shared_ptr<Logger::LoggingAction>(new Logger::LogManipAction(*(channel.stream), manip_func));
+            m_MessageQueue.push(action);
+        }
+
         m_MessageReady.notify_all();
+    }
+
+    void Logger::Log(log_level_t level) {
+        LogLevel(level);
+    }
+
+    log_level_t Logger::LogLevel() const noexcept {
+        return m_LogLevel;
+    }
+
+    void Logger::LogLevel(log_level_t level) {
+        m_LogLevel = level;
     }
 
     template<class T>

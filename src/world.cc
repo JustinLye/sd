@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include "sd/framework/input/key_state_type.h"
+#include "sd/framework/logging/log_level_t.h"
 
 namespace sd {
 namespace gameplay {
@@ -14,9 +15,13 @@ namespace gameplay {
         sd::framework::interfaces::IComponent(),
         m_KeyTracker(nullptr),
         m_Window(nullptr),
-        m_Components() {}
+        m_Components(),
+        m_GameClock(),
+        m_Logger() {}
 
     bool World::Initialize() {
+        m_Logger.AddChannel(std::cout, framework::logging::log_level_t::warning);
+        m_Logger.AddChannel("sd.log", framework::logging::log_level_t::trace);
         if (!glfwInit()) {
             std::cerr << "Error! Failed to initialize GLFW." << std::endl;
             return false;
@@ -24,6 +29,7 @@ namespace gameplay {
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE);
 
         m_Window = glfwCreateWindow(600, 800, "sd", nullptr, nullptr);
         if (!m_Window) {
@@ -39,7 +45,6 @@ namespace gameplay {
         }
 
         auto result = InitializeInput();
-
         return result;
     }
 
@@ -48,8 +53,12 @@ namespace gameplay {
     }
 
     void World::Update(double dt) {
-        m_KeyTracker->Update(dt);
+
+        m_GameClock.Tick();
+        m_KeyTracker->Update(m_GameClock.DeltaTime());
         using key_state_t = framework::input::key_state_t;
+        using log_level_t = framework::logging::log_level_t;
+        auto origin_log_level = m_Logger.LogLevel();
         switch ((*m_KeyTracker)[GLFW_KEY_ESCAPE].state) {
         case key_state_t::pressed:
         case key_state_t::down:
@@ -57,15 +66,30 @@ namespace gameplay {
             break;
         }
 
-        for (auto c : m_Components) {
-            c->Update(dt);
+        switch((*m_KeyTracker)[GLFW_KEY_T].state) {
+        case key_state_t::pressed:
+            m_Logger << log_level_t::debug << m_GameClock << std::endl << origin_log_level;
+            break;
         }
+
+        switch((*m_KeyTracker)[GLFW_KEY_F1].state) {
+        case key_state_t::pressed:
+            m_Logger << framework::logging::log_level_t::warning << "warning test" << std::endl << origin_log_level;
+            break;
+        }
+
+        for (auto c : m_Components) {
+            c->Update(m_GameClock.DeltaTime());
+        }
+
     }
 
     bool World::InitializeInput() {
         m_KeyTracker = std::make_shared<framework::input::KeyTracker>();
         m_KeyTracker->Initialize(m_Window);
         m_KeyTracker->Track(GLFW_KEY_ESCAPE);
+        m_KeyTracker->Track(GLFW_KEY_T);
+        m_KeyTracker->Track(GLFW_KEY_F1);
         return true;
     }
 

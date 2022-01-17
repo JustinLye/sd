@@ -30,6 +30,8 @@ namespace time {
         m_TotalStopTime(std::move(other.m_TotalStopTime)),
         m_DurationWhenStopped(std::move(other.m_DurationWhenStopped)) {}
 
+    Clock::~Clock() {}
+
     Clock& Clock::operator=(const Clock& other) {
         if (this == &other) {
             return *this;
