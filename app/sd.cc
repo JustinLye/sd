@@ -4,11 +4,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "sd/gameplay/time/timer.h"
+#include "sd/gameplay/time/timer_status_t.h"
 #include "sd/gameplay/world.h"
-#include "sd/framework/logging/logger.h"
 
 int main(int argc, char* argv[]) {
-
+    
 #if defined(_DEBUG)
     char c;
     std::cout << "press any key to continue: ";
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]) {
     if (!world->Initialize()) {
     } else {
     }
-    
+    auto timer = std::make_shared<sd::gameplay::time::Timer>(std::move(world->StartTimer(std::atoi(argv[1]))));
     double last_frame_time = 0;
     glfwSetTime(last_frame_time);
     while (!glfwWindowShouldClose(world->Window())) {
@@ -29,6 +30,10 @@ int main(int argc, char* argv[]) {
         glClear(GL_COLOR_BUFFER_BIT);
         auto current_elapsed_time = glfwGetTime();
         world->Update(0);
+        if (timer && timer->Status() == sd::gameplay::time::timer_status_t::expired) {
+            std::cout << "timer expired" << std::endl;
+            timer = nullptr;
+        }
         glfwSwapBuffers(world->Window());
         glfwPollEvents();
     }

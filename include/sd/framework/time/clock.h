@@ -76,26 +76,32 @@ namespace time {
     }
 
     void Clock::HasStarted(bool has_started) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_HasStarted = has_started;
     }
     
     void Clock::IsStopped(bool is_stopped) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_IsStopped = is_stopped;
     }
     
     void Clock::StartTime(const std::chrono::high_resolution_clock::time_point& start_time) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_StartTime = start_time;
     }
 
     void Clock::StoppedTime(const std::chrono::high_resolution_clock::time_point& stopped_time) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_StoppedTime = stopped_time;
     }
     
     void Clock::TotalStopTime(const std::chrono::high_resolution_clock::duration& total_stop_time) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_TotalStopTime = total_stop_time;
     }
     
     void Clock::DurationWhenStopped(const std::chrono::high_resolution_clock::duration& duration_when_stopped) {
+        std::lock_guard<std::mutex> locker(m_ClockMutex);
         m_DurationWhenStopped = duration_when_stopped;
     }
 
