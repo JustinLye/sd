@@ -21,11 +21,14 @@ namespace input {
     }
 
     void MouseTracker::Update(double dt) {
-        MouseButtonState& mouse_button_state = m_Buttons.find(mouse_button_t::left)->second;
-        auto button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_LEFT);
+        auto l_button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_LEFT);
+        auto m_button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_MIDDLE);
+        auto r_button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_RIGHT);
 
-        
-        
+        sd::framework::input::Update(m_Buttons.find(mouse_button_t::left)->second, l_button_state);
+        sd::framework::input::Update(m_Buttons.find(mouse_button_t::middle)->second, m_button_state);
+        sd::framework::input::Update(m_Buttons.find(mouse_button_t::right)->second, r_button_state);
+
     }
 
     void Update(MouseButtonState& button_state, int glfw_state) {
