@@ -103,11 +103,7 @@ namespace gameplay {
                 0.0,
                 0.0
             };
-            double xpos, ypos;
-            glfwGetCursorPos(m_Window, &xpos, &ypos);
-            std::cout << "(" << xpos << ", " << ypos << ")" << std::endl;
-            mouse_click.xpos = xpos;
-            mouse_click.ypos = ypos;
+            glfwGetCursorPos(m_Window, &mouse_click.xpos, &mouse_click.ypos);
             m_Logger << log_level_t::debug << mouse_click << std::endl;
         }
 

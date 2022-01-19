@@ -1,5 +1,7 @@
 #include "sd/gameplay/time/game_clock.h"
 
+#include <utility>
+
 namespace sd {
 namespace gameplay {
 namespace time {
@@ -11,13 +13,13 @@ namespace time {
 
     GameClock::GameClock(const GameClock& other) :
         framework::time::Clock(other),
-        m_ElapsedSecondsAtLastTick(0),
-        m_DeltaTime(0) {}
+        m_ElapsedSecondsAtLastTick(other.m_ElapsedSecondsAtLastTick),
+        m_DeltaTime(other.m_DeltaTime) {}
 
     GameClock::GameClock(GameClock&& other) noexcept :
         framework::time::Clock(other),
-        m_ElapsedSecondsAtLastTick(0),
-        m_DeltaTime(0) {}
+        m_ElapsedSecondsAtLastTick(std::move(other.m_ElapsedSecondsAtLastTick)),
+        m_DeltaTime(std::move(other.m_DeltaTime)) {}
 
     GameClock::~GameClock() {}
 

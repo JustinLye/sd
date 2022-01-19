@@ -4,6 +4,7 @@
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
+#include <limits>
 
 #include "sd/framework/time/clock.h"
 #include "sd/gameplay/time/timer.h"
@@ -36,7 +37,11 @@ namespace time {
         using Clock::Elapsed;
 
         inline friend std::ostream& operator<<(std::ostream& o, const GameClock& clock) {
-            o << "Elapsed Time: " << clock.Elapsed() << " Delta Time: " << clock.DeltaTime() << " FPS: " << 1 / clock.DeltaTime();
+            double fps = 0.0;
+            if (clock.DeltaTime() > std::numeric_limits<double>::epsilon()) {
+                fps = 1 / clock.DeltaTime();
+            }
+            o << "Elapsed Time: " << clock.Elapsed() << " Delta Time: " << clock.DeltaTime() << " FPS: " << fps;
             return o;
         }
 
