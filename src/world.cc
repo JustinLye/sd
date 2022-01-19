@@ -88,6 +88,8 @@ namespace gameplay {
             break;
         }
 
+
+
         for (auto c : m_Components) {
             c->Update(m_GameClock.DeltaTime());
         }

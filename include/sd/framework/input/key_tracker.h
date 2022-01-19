@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "sd/framework/input/key.h"
+#include "sd/framework/input/key_state.h"
 #include "sd/framework/interfaces/IComponent.h"
 
 namespace sd {

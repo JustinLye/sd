@@ -38,6 +38,9 @@ set (LIBSD_FRAMEWORK_INPUT_HEADERS
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_click.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_action_t.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_t.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_tracker.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_state_t.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_state.h"
 )
 
 set (LIBSD_GAMEPLAY_HEADERS
@@ -65,6 +68,8 @@ set (LIBSD_FRAMEWORK_INPUT_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/key_state.cc"
     "${CMAKE_CURRENT_SOURCE_DIR}/key_tracker.cc"
     "${CMAKE_CURRENT_SOURCE_DIR}/key.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mouse_tracker.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mouse_button_state.cc"
 )
 
 set (LIBSD_GAMEPLAY_SOURCES
