@@ -6,6 +6,9 @@
 #include <GLFW/glfw3.h>
 
 #include "sd/framework/input/key_state_type.h"
+#include "sd/framework/input/mouse_button_t.h"
+#include "sd/framework/input/mouse_button_state_t.h"
+#include "sd/framework/input/mouse_click.h"
 #include "sd/framework/logging/log_level_t.h"
 
 namespace sd {
@@ -17,7 +20,8 @@ namespace gameplay {
         m_Window(nullptr),
         m_Components(),
         m_GameClock(),
-        m_Logger() {}
+        m_Logger(),
+        m_MouseTracker(nullptr) {}
 
     bool World::Initialize() {
         m_Logger.AddChannel(std::cout, framework::logging::log_level_t::debug);
@@ -56,8 +60,12 @@ namespace gameplay {
 
         m_GameClock.Tick();
         m_KeyTracker->Update(m_GameClock.DeltaTime());
+        m_MouseTracker->Update(m_GameClock.DeltaTime());
         using key_state_t = framework::input::key_state_t;
         using log_level_t = framework::logging::log_level_t;
+        using mouse_button_t = framework::input::mouse_button_t;
+        using mouse_button_state_t = framework::input::mouse_button_state_t;
+        using MouseClick = framework::input::MouseClick;
         auto origin_log_level = m_Logger.LogLevel();
         switch ((*m_KeyTracker)[GLFW_KEY_ESCAPE].state) {
         case key_state_t::pressed:
@@ -88,7 +96,20 @@ namespace gameplay {
             break;
         }
 
-
+        if ((*m_MouseTracker)[mouse_button_t::left].state == mouse_button_state_t::clicked) {
+            MouseClick mouse_click {
+                framework::input::mouse_action_t::press,
+                mouse_button_t::left,
+                0.0,
+                0.0
+            };
+            double xpos, ypos;
+            glfwGetCursorPos(m_Window, &xpos, &ypos);
+            std::cout << "(" << xpos << ", " << ypos << ")" << std::endl;
+            mouse_click.xpos = xpos;
+            mouse_click.ypos = ypos;
+            m_Logger << log_level_t::debug << mouse_click << std::endl;
+        }
 
         for (auto c : m_Components) {
             c->Update(m_GameClock.DeltaTime());
@@ -100,6 +121,10 @@ namespace gameplay {
         return std::move(m_GameClock.StartTimer(seconds));
     }
 
+    framework::logging::Logger& World::Logger() const {
+        return m_Logger;
+    }
+
     bool World::InitializeInput() {
         m_KeyTracker = std::make_shared<framework::input::KeyTracker>();
         m_KeyTracker->Initialize(m_Window);
@@ -109,6 +134,9 @@ namespace gameplay {
         m_KeyTracker->Track(GLFW_KEY_P);
         m_KeyTracker->Track(GLFW_KEY_KP_SUBTRACT);
         m_KeyTracker->Track(GLFW_KEY_KP_ADD);
+
+        m_MouseTracker = std::make_shared<framework::input::MouseTracker>();
+        m_MouseTracker->Initialize(m_Window);
         return true;
     }
 

@@ -35,6 +35,9 @@ namespace logging {
         inline
         Logger& operator<<(manip_func_t manip_func);
 
+        template<std::size_t N>
+        Logger& operator<<(const char(&message)[N]);
+
     private:
         class LoggingAction {
         public:
@@ -54,7 +57,17 @@ namespace logging {
             LogMessageAction(std::ostream& stream, const T& message);
             inline virtual void Log() override;
         private:
-            const T& m_Message;
+            T m_Message;
+        };
+
+        template<std::size_t N>
+        class LogCharArrayAction :
+            public LoggingAction {
+        public:
+            LogCharArrayAction(std::ostream&, const char(&message)[N]);
+            inline virtual void Log() override;
+        private:
+            const char(&m_Message)[N];
         };
 
         class LogManipAction :
@@ -77,6 +90,9 @@ namespace logging {
 
         inline
         void Log(log_level_t level);
+
+        template<std::size_t N>
+        void Log(const char(&message)[N]);
 
         void LoggingLoop();
 
@@ -103,6 +119,11 @@ namespace logging {
         Logger::LoggingAction(stream),
         m_Message(message) {}
 
+    template<std::size_t N>
+    Logger::LogCharArrayAction<N>::LogCharArrayAction(std::ostream& stream, const char(&message)[N]) :
+        Logger::LoggingAction(stream),
+        m_Message(message) {}
+
     template<class T>
     void Logger::LogMessageAction<T>::Log() {
         auto s = Stream();
@@ -119,6 +140,14 @@ namespace logging {
         auto s = Stream();
         if (s) {
             m_ManipFunc(*s);
+        }
+    }
+
+    template<std::size_t N>
+    void Logger::LogCharArrayAction<N>::Log() {
+        auto s = Stream();
+        if (s) {
+            (*s) << m_Message;
         }
     }
 
@@ -153,6 +182,21 @@ namespace logging {
         LogLevel(level);
     }
 
+    template<std::size_t N>
+    void Logger::Log(const char(&message)[N]) {
+        std::unique_lock<std::mutex> locker(m_LoggerMutex);
+        for (auto channel : m_Channels) {
+            if (!channel.stream || channel.log_level > m_LogLevel) {
+                continue;
+            }
+            std::shared_ptr<Logger::LogCharArrayAction<N>> action = std::shared_ptr<Logger::LogCharArrayAction<N>>(new Logger::LogCharArrayAction(*(channel.stream), message));
+            m_MessageQueue.push(action);
+        }
+
+        m_MessageReady.notify_all();
+    }
+
+
     log_level_t Logger::LogLevel() const noexcept {
         return m_LogLevel;
     }
@@ -169,6 +213,12 @@ namespace logging {
 
     Logger& Logger::operator<<(manip_func_t manip_func) {
         Log(manip_func);
+        return *this;
+    }
+
+    template<std::size_t N>
+    Logger& Logger::operator<<(const char(&message)[N]) {
+        Log(message);
         return *this;
     }
 

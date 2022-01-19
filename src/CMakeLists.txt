@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 add_library(libsd STATIC)
 add_dependencies(libsd glad glfw)
 target_link_libraries(libsd PUBLIC glad glfw)
-target_compile_definitions(libsd PUBLIC GLFW_INCLUDE_NONE)
+target_compile_definitions(libsd PUBLIC GLFW_INCLUDE_NONE GLFW_DLL)
 set_target_properties(libsd PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(libsd PROPERTIES CXX_STANDARD 20)
 
