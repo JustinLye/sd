@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     } else {
     }
     auto timer = std::make_shared<sd::gameplay::time::Timer>(std::move(world->StartTimer(std::atoi(argv[1]))));
+    auto timer1 = std::make_shared<sd::gameplay::time::Timer>(std::move(world->StartTimer(std::atoi(argv[1])*2)));
     double last_frame_time = 0;
     glfwSetTime(last_frame_time);
     while (!glfwWindowShouldClose(world->Window())) {
@@ -33,6 +34,10 @@ int main(int argc, char* argv[]) {
         if (timer && timer->Status() == sd::gameplay::time::timer_status_t::expired) {
             std::cout << "timer expired" << std::endl;
             timer = nullptr;
+        }
+        if (timer1 && timer1->Status() == sd::gameplay::time::timer_status_t::expired) {
+            std::cout << "timer1 expired" << std::endl;
+            timer1 = nullptr;
         }
         glfwSwapBuffers(world->Window());
         glfwPollEvents();

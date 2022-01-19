@@ -35,6 +35,9 @@ set (LIBSD_FRAMEWORK_INPUT_HEADERS
     "${LIBSD_FRAMEWORK_INPUT_DIR}/key_state.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/key_tracker.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/key.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_click.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_action_t.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_t.h"
 )
 
 set (LIBSD_GAMEPLAY_HEADERS
