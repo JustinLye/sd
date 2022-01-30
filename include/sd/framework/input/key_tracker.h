@@ -6,6 +6,7 @@
 
 #include "sd/framework/input/key_state.h"
 #include "sd/framework/interfaces/IComponent.h"
+#include "sd/framework/interfaces/key_change_callback.h"
 
 namespace sd {
 namespace framework {
@@ -25,9 +26,14 @@ namespace input {
         const KeyState& operator[](int key) const;
 
         virtual void Update(double dt) override;
+
+        std::size_t RegisterKeyChangeCallback(std::shared_ptr<framework::interfaces::IKeyChangeCallback> key_change_callback);
+        void UnregisterKeyChangeCallback(std::size_t id);
     private:
         GLFWwindow* m_Window;
         std::unordered_map<int, KeyState> m_Keys;
+        std::unordered_map<std::size_t, std::shared_ptr<framework::interfaces::IKeyChangeCallback>> m_KeyCallBacks;
+        std::size_t m_NextKeyCallbackId;
 
     };
 

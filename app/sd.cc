@@ -4,9 +4,21 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "sd/framework/interfaces/key_change_callback.h"
 #include "sd/gameplay/time/timer.h"
 #include "sd/gameplay/time/timer_status_t.h"
 #include "sd/gameplay/world.h"
+
+class TestCB :
+    public sd::framework::interfaces::IKeyChangeCallback {
+public:
+    virtual void operator()(const std::vector<std::pair<int, sd::framework::input::KeyState>>& state) override {
+        for (const auto& kp : state) {
+            std::cout << "Key: " << kp.first << " " << kp.second << std::endl;
+        }
+    }
+};
+
 
 int main(int argc, char* argv[]) {
     
@@ -20,6 +32,9 @@ int main(int argc, char* argv[]) {
     } else {
     }
     auto t1 = std::shared_ptr<sd::gameplay::time::Timer>(new sd::gameplay::time::Timer(std::move(world->StartTimer(std::atoi(argv[1])))));
+    auto t = std::make_shared<TestCB>();
+    world->RegisterKeyChangeCallback(t);
+
     while (!glfwWindowShouldClose(world->Window())) {
         int width = 0;
         int height = 0;

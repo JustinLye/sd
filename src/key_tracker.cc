@@ -12,7 +12,9 @@ namespace input {
     KeyTracker::KeyTracker() :
         sd::framework::interfaces::IComponent(),
         m_Window(nullptr),
-        m_Keys() {
+        m_Keys(),
+        m_KeyCallBacks(), 
+        m_NextKeyCallbackId(0) {
         m_Keys.reserve(GLFW_KEY_LAST);
     }
 
@@ -37,6 +39,7 @@ namespace input {
     }
 
     void KeyTracker::Update(double dt) {
+        std::vector<std::pair<int, KeyState>> key_changes;
         for (auto& k : m_Keys) {
             auto key_state = glfwGetKey(m_Window, k.first);
             switch (key_state) {
@@ -47,10 +50,12 @@ namespace input {
                 case key_state_t::released:
                     k.second.state = key_state_t::pressed;
                     k.second.last_updated_time_point = std::chrono::steady_clock::now();
+                    key_changes.push_back(std::make_pair(k.first, k.second));
                     break;
                 case key_state_t::pressed:
                     k.second.state = key_state_t::down;
                     k.second.last_updated_time_point = std::chrono::steady_clock::now();
+                    key_changes.push_back(std::make_pair(k.first, k.second));
                     break;
                 }
                 break;
@@ -61,10 +66,12 @@ namespace input {
                 case key_state_t::pressed:
                     k.second.state = key_state_t::released;
                     k.second.last_updated_time_point = std::chrono::steady_clock::now();
+                    key_changes.push_back(std::make_pair(k.first, k.second));
                     break;
                 case key_state_t::released:
                     k.second.state = key_state_t::up;
                     k.second.last_updated_time_point = std::chrono::steady_clock::now();
+                    key_changes.push_back(std::make_pair(k.first, k.second));
                     break;
                 }
                 break;
@@ -76,6 +83,7 @@ namespace input {
                 case key_state_t::up:
                     k.second.state = key_state_t::down;
                     k.second.last_updated_time_point = std::chrono::steady_clock::now();
+                    key_changes.push_back(std::make_pair(k.first, k.second));
                     break;
 
                 }
@@ -83,7 +91,20 @@ namespace input {
             }
         }
 
+        for (auto& key_callback : m_KeyCallBacks) {
+            key_callback.second->operator()(key_changes);
+        }
+
     }
 
+    std::size_t KeyTracker::RegisterKeyChangeCallback(std::shared_ptr<framework::interfaces::IKeyChangeCallback> key_change_callback) {
+        auto id = ++m_NextKeyCallbackId;
+        m_KeyCallBacks.insert(std::make_pair(id, key_change_callback));
+        return m_NextKeyCallbackId;
+    }
+
+    void KeyTracker::UnregisterKeyChangeCallback(std::size_t id) {
+        m_KeyCallBacks.erase(id);
+    }
 
 }}}

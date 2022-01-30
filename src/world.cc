@@ -136,4 +136,12 @@ namespace gameplay {
         return true;
     }
 
+    std::size_t World::RegisterKeyChangeCallback(std::shared_ptr<framework::interfaces::IKeyChangeCallback> key_change_callback) {
+        return m_KeyTracker->RegisterKeyChangeCallback(key_change_callback);
+    }
+
+    void World::UnregisterKeyChangeCallback(std::size_t id) {
+        m_KeyTracker->UnregisterKeyChangeCallback(id);
+    }
+
 }}

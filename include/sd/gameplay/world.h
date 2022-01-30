@@ -9,6 +9,7 @@
 #include "sd/framework/input/mouse_tracker.h"
 #include "sd/framework/logging/logger.h"
 #include "sd/framework/interfaces/IComponent.h"
+#include "sd/framework/interfaces/key_change_callback.h"
 
 namespace sd {
 namespace gameplay {
@@ -24,6 +25,9 @@ namespace gameplay {
         time::Timer StartTimer(double seconds);
         framework::logging::Logger& Logger() const;
 
+        std::size_t RegisterKeyChangeCallback(std::shared_ptr<framework::interfaces::IKeyChangeCallback> key_change_callback);
+        void UnregisterKeyChangeCallback(std::size_t id);
+
     private:
         std::shared_ptr<sd::framework::input::KeyTracker> m_KeyTracker;
         GLFWwindow* m_Window;
@@ -31,7 +35,6 @@ namespace gameplay {
         time::GameClock m_GameClock;
         mutable framework::logging::Logger m_Logger;
         std::shared_ptr<sd::framework::input::MouseTracker> m_MouseTracker;
-
 
         bool InitializeInput();
 
