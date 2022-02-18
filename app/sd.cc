@@ -31,7 +31,8 @@ int main(int argc, char* argv[]) {
     if (!world->Initialize()) {
     } else {
     }
-    auto t1 = std::shared_ptr<sd::gameplay::time::Timer>(new sd::gameplay::time::Timer(std::move(world->StartTimer(std::atoi(argv[1])))));
+    auto t1 = world->StartTimer(std::atoi(argv[1]));
+    auto t2 = world->StartTimer(std::atoi(argv[1])/2);
     auto t = std::make_shared<TestCB>();
     world->RegisterKeyChangeCallback(t);
 
@@ -42,9 +43,19 @@ int main(int argc, char* argv[]) {
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         world->Update(0);
-        if (t1 && t1->Status() == sd::gameplay::time::timer_status_t::expired) {
-            world->Logger() << "timer expired" << std::endl;
-            t1 = nullptr;
+        if (t1) {
+            if (t1->Status() == sd::gameplay::time::timer_status_t::expired) {
+                world->Logger() << "timer expired" << std::endl;
+                t1 = nullptr;
+            } else if (t1->Status() == sd::gameplay::time::timer_status_t::cancelled) {
+                world->Logger() << "timer " << t1->Id() << " cancelled." << std::endl;
+                t1 = nullptr;
+            }
+        }
+        if (t2 && t2->Status() == sd::gameplay::time::timer_status_t::expired) {
+            world->Logger() << "timer " << t2->Id() << " expired." << std::endl;
+            world->CancelTimer(*t1);
+            t2 = nullptr;
         }
         glfwSwapBuffers(world->Window());
         glfwPollEvents();

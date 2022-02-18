@@ -113,8 +113,12 @@ namespace gameplay {
 
     }
 
-    time::Timer World::StartTimer(double seconds) {
-        return std::move(m_GameClock.StartTimer(seconds));
+    std::shared_ptr<time::GameClockTimer> World::StartTimer(double seconds) {
+        return m_GameClock.StartTimer(seconds);
+    }
+
+    void World::CancelTimer(const time::Timer& timer) {
+        m_GameClock.CancelTimer(timer);
     }
 
     framework::logging::Logger& World::Logger() const {

@@ -19,9 +19,11 @@ set (LIBSD_GAMEPLAY_TIME_DIR ${LIBSD_GAMEPLAY_DIR}/time)
 
 set (LIBSD_GAMEPLAY_TIME_SOURCES
     "${LIBSD_GAMEPLAY_TIME_DIR}/game_clock.h"
+    "${LIBSD_GAMEPLAY_TIME_DIR}/game_clock_timer.h"
     "${LIBSD_GAMEPLAY_TIME_DIR}/timer.h"
     "${LIBSD_GAMEPLAY_TIME_DIR}/timer_status_t.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/game_clock.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/game_clock_timer.cc"
     "${CMAKE_CURRENT_SOURCE_DIR}/timer.cc"
 )
 

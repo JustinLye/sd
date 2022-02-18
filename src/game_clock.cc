@@ -60,6 +60,7 @@ namespace time {
             auto elapsed = Elapsed();
             m_DeltaTime = elapsed - m_ElapsedSecondsAtLastTick;
             m_ElapsedSecondsAtLastTick = elapsed;
+            m_CancelledTimerIds.clear();
         }
         m_GameClockCV.notify_all();
     }
@@ -72,17 +73,29 @@ namespace time {
         Start();
     }
 
-    Timer GameClock::StartTimer(double seconds) {
-        return { std::move(std::async(std::launch::async, &GameClock::WaitFor, std::ref(*this), seconds)) };
+    std::shared_ptr<GameClockTimer> GameClock::StartTimer(double seconds) {
+        std::shared_ptr<GameClockTimer> t(new GameClockTimer(std::shared_ptr<GameClock>(this, [](auto p) { })));
+        auto f = std::async(std::launch::async, &GameClock::WaitFor, std::ref(*this), seconds, t->Id());
+        t->SetStatusFuture(std::move(f));
+        return t;
 
     }
 
-    timer_status_t GameClock::WaitFor(double seconds) {
+    void GameClock::CancelTimer(const Timer& timer) {
+        std::unique_lock<std::mutex> locker(m_GameClockMutex);
+        m_CancelledTimerIds.insert(timer.Id());
+        m_GameClockCV.notify_all();
+    }
+
+    timer_status_t GameClock::WaitFor(double seconds, std::size_t timer_id) {
         std::unique_lock<std::mutex> locker(m_GameClockMutex);
         double elapsed = 0;
         while (elapsed < seconds) {
             m_GameClockCV.wait(locker);
             elapsed += m_DeltaTime;
+            if (!m_CancelledTimerIds.empty() && m_CancelledTimerIds.find(timer_id) != m_CancelledTimerIds.end()) {
+                return timer_status_t::cancelled;
+            }
         }
         return timer_status_t::expired;
     }

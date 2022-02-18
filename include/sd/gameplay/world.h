@@ -22,7 +22,8 @@ namespace gameplay {
         bool Initialize();
         GLFWwindow* Window() const;
         virtual void Update(double dt) override;
-        time::Timer StartTimer(double seconds);
+        std::shared_ptr<time::GameClockTimer> StartTimer(double seconds);
+        void CancelTimer(const time::Timer& timer);
         framework::logging::Logger& Logger() const;
 
         std::size_t RegisterKeyChangeCallback(std::shared_ptr<framework::interfaces::IKeyChangeCallback> key_change_callback);

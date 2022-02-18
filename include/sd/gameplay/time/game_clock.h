@@ -3,17 +3,20 @@
 #include <chrono>
 #include <condition_variable>
 #include <iostream>
+#include <memory>
 #include <mutex>
 #include <limits>
+#include <set>
 
 #include "sd/framework/time/clock.h"
 #include "sd/gameplay/time/timer.h"
+#include "sd/gameplay/time/game_clock_timer.h"
 #include "sd/gameplay/time/timer_status_t.h"
 
 namespace sd {
 namespace gameplay {
 namespace time {
-
+    class GameClockTimer;
     class GameClock :
         private sd::framework::time::Clock {
     public:
@@ -32,7 +35,8 @@ namespace time {
         void Pause();
         void Resume();
 
-        Timer StartTimer(double seconds);
+        std::shared_ptr<GameClockTimer> StartTimer(double seconds);
+        void CancelTimer(const Timer& timer);
 
         using Clock::Elapsed;
 
@@ -50,7 +54,9 @@ namespace time {
         double m_DeltaTime;
         std::mutex m_GameClockMutex;
         std::condition_variable m_GameClockCV;
+        std::set<std::size_t> m_CancelledTimerIds;
+        std::shared_ptr<GameClock> m_This;
 
-        timer_status_t WaitFor(double seconds);
+        timer_status_t WaitFor(double seconds, std::size_t timer_id);
     };
 }}}
