@@ -104,7 +104,14 @@ namespace gameplay {
                 0.0
             };
             glfwGetCursorPos(m_Window, &mouse_click.xpos, &mouse_click.ypos);
+            int height, width;
+            glfwGetFramebufferSize(m_Window, &width, &height);
+            m_Logger << log_level_t::debug << "Framebuffer Size: (" << width << ", " << height << ")" << std::endl;
+            double sc_width = static_cast<double>(mouse_click.xpos) / (static_cast<double>(width) / 2.0) - 1.0;
+            double sc_height = static_cast<double>(mouse_click.ypos) / (static_cast<double>(height) / 2.0) - 1.0;
+            m_Logger << log_level_t::debug << "(" << sc_width << ", " << sc_height << ")" << std::endl;
             m_Logger << log_level_t::debug << mouse_click << std::endl;
+
         }
 
         for (auto c : m_Components) {

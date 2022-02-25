@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 add_library(libsd STATIC)
 add_dependencies(libsd glad glfw)
-target_link_libraries(libsd PUBLIC glad glfw)
+target_link_libraries(libsd PUBLIC glad glfw glm)
 target_compile_definitions(libsd PUBLIC GLFW_INCLUDE_NONE GLFW_DLL)
 set_target_properties(libsd PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(libsd PROPERTIES CXX_STANDARD 20)
@@ -16,6 +16,11 @@ set (LIBSD_FRAMEWORK_INTERFACES_DIR ${LIBSD_FRAMEWORK_DIR}/interfaces)
 set (LIBSD_FRAMEWORK_TIME_DIR ${LIBSD_FRAMEWORK_DIR}/time)
 set (LIBSD_FRAMEWORK_LOGGING_DIR ${LIBSD_FRAMEWORK_DIR}/logging)
 set (LIBSD_GAMEPLAY_TIME_DIR ${LIBSD_GAMEPLAY_DIR}/time)
+
+set (LIBSD_FRAMEWORK_GEOMETRY_SOURCES
+    "${LIBSD_FRAMEWORK_DIR}/geometry/point.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/point.cc"
+)
 
 set (LIBSD_GAMEPLAY_TIME_SOURCES
     "${LIBSD_GAMEPLAY_TIME_DIR}/game_clock.h"
@@ -91,6 +96,13 @@ target_sources(
        ${LIBSD_GAMEPLAY_SOURCES}
        ${LIBSD_FRAMEWORK_LOGGING_SOURCES}
        ${LIBSD_GAMEPLAY_TIME_SOURCES}
+       ${LIBSD_FRAMEWORK_GEOMETRY_SOURCES}
+)
+
+source_group(
+    "framework\\geometry"
+    FILES
+        ${LIBSD_FRAMEWORK_GEOMETRY_SOURCES}
 )
 
 source_group(
