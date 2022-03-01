@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -32,6 +32,9 @@ namespace gameplay {
         std::size_t RegisterMouseClickCallback(std::shared_ptr<framework::interfaces::IMouseButtonChangeEventHandler> mouse_click_callback);
         void UnregisterMouseClickCallback(std::size_t id);
         void AddComponent(std::shared_ptr<sd::framework::interfaces::IComponent> component);
+
+        void Pause();
+        void Resume();
 
     private:
         std::shared_ptr<sd::framework::input::KeyTracker> m_KeyTracker;

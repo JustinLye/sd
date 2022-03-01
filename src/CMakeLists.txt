@@ -96,6 +96,7 @@ set (LIBSD_GAMEPLAY_SOURCES
 set (LIBSD_FRAMEWORK_GRAPHICS_SOURCES
     "${LIBSD_FRAMEWORK_DIR}/graphics/shaders.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/shaders.cc"
+    "${LIBSD_FRAMEWORK_DIR}/graphics/buffer_segment.h"
 )
 
 target_sources(

@@ -172,4 +172,16 @@ namespace gameplay {
     void World::AddComponent(std::shared_ptr<sd::framework::interfaces::IComponent> component) {
         m_Components.push_back(component);
     }
+
+    void World::Pause() {
+        if (!m_GameClock.IsPaused()) {
+            m_GameClock.Pause();
+        }
+    }
+
+    void World::Resume() {
+        if (m_GameClock.IsPaused()) {
+            m_GameClock.Resume();
+        }
+    }
 }}

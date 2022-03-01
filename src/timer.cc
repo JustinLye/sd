@@ -45,10 +45,15 @@ namespace time {
         return *this;
     }
 
-    timer_status_t Timer::Status() const {
-        if (!m_TimerFinished && m_StatusFuture.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-            m_Status = m_StatusFuture.get();
-            m_TimerFinished = true;
+    timer_status_t Timer::Status(bool wait) const {
+        if (!m_TimerFinished) {
+            if (wait) {
+                m_Status = m_StatusFuture.get();
+                m_TimerFinished = true;
+            } else if (m_StatusFuture.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+                m_Status = m_StatusFuture.get();
+                m_TimerFinished = true;
+            }
         }
         return m_Status;
     }

@@ -19,7 +19,7 @@ namespace time {
 
         Timer& operator=(Timer&& other) noexcept;
 
-        timer_status_t Status() const;
+        timer_status_t Status(bool wait = false) const;
         std::size_t Id() const noexcept;
 
     protected:

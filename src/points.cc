@@ -1,6 +1,7 @@
 #include "sd/gameplay/points.h"
 
 #include <iostream>
+#include <thread>
 
 #include <GLFW/glfw3.h>
 
@@ -10,12 +11,19 @@
 namespace sd {
 namespace gameplay {
 
-    Points::Points(GLFWwindow* window) :
+    static void hide_segment(std::shared_ptr<World> world, double wait_time, std::shared_ptr<sd::framework::graphics::BufferSegment> segment) {
+        auto timer = world->StartTimer(wait_time);
+        (timer->Status(true));
+        segment->hidden = true;
+    }
+
+    Points::Points(std::shared_ptr<World> world) :
+        m_World(world),
         IComponent(),
         IDrawable(),
         IMouseButtonChangeEventHandler(),
         m_Points(),
-        m_Window(window),
+        m_Window(),
         m_Rebuffer(true),
         m_ProgramId(0),
         m_VAO(0),
@@ -36,14 +44,15 @@ namespace gameplay {
             return;
         }
         glBindVertexArray(m_VAO);
-        for (const auto& segment : m_Segments) {
-            glUseProgram(segment.first);
-            if (segment.second.second > 1) {
-                glDrawArrays(GL_LINE_STRIP, segment.second.first, segment.second.second);
-            } else {
-                glDrawArrays(GL_POINTS, segment.second.first, segment.second.second);
+        auto segment = m_Segments.begin();
+        while (segment != m_Segments.end()) {
+            if ((*segment)->hidden) {
+                segment = m_Segments.erase(segment);
+                continue;
             }
-            
+            glUseProgram((*segment)->shader_program);
+            glDrawArrays((*segment)->poly_mode, (*segment)->offset, (*segment)->size);
+            ++segment;
         }
         if (m_CurrentSegmentSize == 1) {
             glUseProgram(m_CurrentSegmentProgram);
@@ -52,11 +61,12 @@ namespace gameplay {
             glUseProgram(m_CurrentSegmentProgram);
             glDrawArrays(GL_LINE_STRIP, m_CurrentSegmentStart, m_CurrentSegmentSize);
         }
-        glBindVertexArray(m_VAO);
+        glBindVertexArray(0);
         glUseProgram(0);
     }
 
     void Points::Initialize() {
+        m_Window = m_World->Window();
         std::vector<std::pair<GLenum, const GLchar* const>> shaders;
         shaders.push_back(std::make_pair(GL_VERTEX_SHADER, sd::framework::graphics::shaders::vertex::default_shader));
         shaders.push_back(std::make_pair(GL_FRAGMENT_SHADER, sd::framework::graphics::shaders::fragment::default_shader));
@@ -108,7 +118,18 @@ namespace gameplay {
         } else if (m_EndSegment) {
             m_EndSegment = false;
             m_StartSegment = true;
-            m_Segments.push_back(std::make_pair(m_CurrentSegmentProgram, std::make_pair(m_CurrentSegmentStart, m_CurrentSegmentSize)));
+            auto segment = std::shared_ptr<sd::framework::graphics::BufferSegment>(
+                new sd::framework::graphics::BufferSegment{
+                    GL_LINE_STRIP,
+                    m_CurrentSegmentStart,
+                    m_CurrentSegmentSize,
+                    false,
+                    m_ProgramId
+                });
+            std::thread t(hide_segment, m_World, 5.0, segment);
+            m_Segments.push_back(segment);
+            t.detach();
+
             m_CurrentSegmentStart += m_CurrentSegmentSize;
             m_CurrentSegmentSize = 0;
             m_CurrentSegmentProgram = m_CurrentSegmentProgram == m_ProgramId ? m_AltProgramId : m_ProgramId;

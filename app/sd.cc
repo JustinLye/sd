@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     auto t2 = world->StartTimer(std::atoi(argv[1])/2);
     auto t = std::make_shared<TestCB>();
     world->RegisterKeyChangeCallback(t);
-    std::shared_ptr<sd::gameplay::Points> points(new sd::gameplay::Points(world->Window()));
+    std::shared_ptr<sd::gameplay::Points> points(new sd::gameplay::Points(world));
     points->Initialize();
     world->AddComponent(points);
     world->RegisterMouseClickCallback(points);
@@ -65,7 +65,9 @@ int main(int argc, char* argv[]) {
             t2 = nullptr;
         }
         glfwSwapBuffers(world->Window());
+        world->Pause();
         glfwPollEvents();
+        world->Resume();
     }
     glfwDestroyWindow(world->Window());
     glfwTerminate();
