@@ -118,6 +118,13 @@ namespace gameplay {
             c->Update(m_GameClock.DeltaTime());
         }
 
+        double fps = 0.0;
+        if (m_GameClock.DeltaTime() > std::numeric_limits<double>::epsilon()) {
+            fps = 1 / m_GameClock.DeltaTime();
+        }
+        if (fps <= 55.0) {
+            m_Logger << log_level_t::warning << m_GameClock << std::endl;
+        }
     }
 
     std::shared_ptr<time::GameClockTimer> World::StartTimer(double seconds) {
@@ -155,4 +162,14 @@ namespace gameplay {
         m_KeyTracker->UnregisterKeyChangeCallback(id);
     }
 
+    std::size_t World::RegisterMouseClickCallback(std::shared_ptr<framework::interfaces::IMouseButtonChangeEventHandler> mouse_click_callback) {
+        return m_MouseTracker->RegisterMouseClickCallback(mouse_click_callback);
+    }
+
+    void World::UnregisterMouseClickCallback(std::size_t id) {
+        m_MouseTracker->UnregisterMouseClickCallback(id);
+    }
+    void World::AddComponent(std::shared_ptr<sd::framework::interfaces::IComponent> component) {
+        m_Components.push_back(component);
+    }
 }}

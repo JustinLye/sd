@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "sd/framework/interfaces/key_change_callback.h"
+#include "sd/gameplay/points.h"
 #include "sd/gameplay/time/timer.h"
 #include "sd/gameplay/time/timer_status_t.h"
 #include "sd/gameplay/world.h"
@@ -35,7 +36,11 @@ int main(int argc, char* argv[]) {
     auto t2 = world->StartTimer(std::atoi(argv[1])/2);
     auto t = std::make_shared<TestCB>();
     world->RegisterKeyChangeCallback(t);
-    glPointSize(100.0f);
+    std::shared_ptr<sd::gameplay::Points> points(new sd::gameplay::Points(world->Window()));
+    points->Initialize();
+    world->AddComponent(points);
+    world->RegisterMouseClickCallback(points);
+    glPointSize(1.0f);
     while (!glfwWindowShouldClose(world->Window())) {
         int width = 0;
         int height = 0;
@@ -44,6 +49,7 @@ int main(int argc, char* argv[]) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         world->Update(0);
+        points->Draw();
         if (t1) {
             if (t1->Status() == sd::gameplay::time::timer_status_t::expired) {
                 world->Logger() << "timer expired" << std::endl;

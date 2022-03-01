@@ -10,7 +10,9 @@ namespace input {
     MouseTracker::MouseTracker() :
         interfaces::IComponent(),
         m_Window(nullptr),
-        m_Buttons() {}
+        m_Buttons(),
+        m_MouseClickCallbacks(),
+        m_NextMouseClickCallbackId(0) {}
 
     void MouseTracker::Initialize(GLFWwindow* window) {
         m_Window = window;
@@ -25,9 +27,56 @@ namespace input {
         auto m_button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_MIDDLE);
         auto r_button_state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_RIGHT);
 
-        sd::framework::input::Update(m_Buttons.find(mouse_button_t::left)->second, l_button_state);
-        sd::framework::input::Update(m_Buttons.find(mouse_button_t::middle)->second, m_button_state);
-        sd::framework::input::Update(m_Buttons.find(mouse_button_t::right)->second, r_button_state);
+        auto button_iter = m_Buttons.find(mouse_button_t::left);
+        auto last_state = button_iter->second;
+        double xpos = 0.0;
+        double ypos = 0.0;
+        glfwGetCursorPos(m_Window, &xpos, &ypos);
+        int height = 0;
+        int width = 0;
+        glfwGetFramebufferSize(m_Window, &width, &height);
+        double xcoord = xpos / (static_cast<double>(width) / 2.0) - 1.0;
+        double ycoord = ypos / (static_cast<double>(height) / 2.0) - 1.0;
+        std::vector<MouseButtonChangeEvent> changed_button_states;
+        sd::framework::input::Update(button_iter->second, l_button_state);
+        if (last_state.state != button_iter->second.state) {
+            changed_button_states.push_back({
+                button_iter->first,
+                last_state,
+                button_iter->second,
+                xcoord,
+                ycoord});
+
+
+        }
+        button_iter = m_Buttons.find(mouse_button_t::middle);
+        last_state = button_iter->second;
+        sd::framework::input::Update(button_iter->second, m_button_state);
+        if (last_state.state != button_iter->second.state) {
+            changed_button_states.push_back({
+                button_iter->first,
+                last_state,
+                button_iter->second,
+                xcoord,
+                ycoord });
+        }
+        button_iter = m_Buttons.find(mouse_button_t::right);
+        last_state = button_iter->second;
+        sd::framework::input::Update(button_iter->second, r_button_state);
+        if (last_state.state != button_iter->second.state) {
+            changed_button_states.push_back({
+                button_iter->first,
+                last_state,
+                button_iter->second,
+                xcoord,
+                ycoord });
+        }
+
+        if (!changed_button_states.empty()) {
+            for (auto callback : m_MouseClickCallbacks) {
+                callback.second->operator()(changed_button_states);
+            }
+        }
 
     }
 
@@ -74,6 +123,16 @@ namespace input {
 
     const MouseButtonState& MouseTracker::operator[](mouse_button_t button) const noexcept {
         return m_Buttons.find(button)->second;
+    }
+
+    std::size_t MouseTracker::RegisterMouseClickCallback(std::shared_ptr<sd::framework::interfaces::IMouseButtonChangeEventHandler> mouse_click_callback) {
+        auto id = ++m_NextMouseClickCallbackId;
+        m_MouseClickCallbacks.insert(std::make_pair(id, mouse_click_callback));
+        return id;
+    }
+
+    void MouseTracker::UnregisterMouseClickCallback(std::size_t id) {
+        m_MouseClickCallbacks.erase(id);
     }
 
 

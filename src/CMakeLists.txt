@@ -48,16 +48,24 @@ set (LIBSD_FRAMEWORK_INPUT_HEADERS
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_tracker.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_state_t.h"
     "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_state.h"
+    "${LIBSD_FRAMEWORK_INPUT_DIR}/mouse_button_change_event.h"
 )
 
 set (LIBSD_GAMEPLAY_HEADERS
     "${LIBSD_GAMEPLAY_DIR}/world.h"
+    "${LIBSD_GAMEPLAY_DIR}/points.h"
 )
 
 set (LIBSD_FRAMEWORK_INTERFACES_HEADERS
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IComponent.h"
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IAction.h"
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/key_change_callback.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IDrawable.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IShapeData.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IRenderer.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IShaderProgram.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/mouse_button_change_event_handler.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/mouse_release_callback.h"
 )
 
 set (LIBSD_FRAMEWORK_LOGGING_SOURCES
@@ -82,6 +90,12 @@ set (LIBSD_FRAMEWORK_INPUT_SOURCES
 
 set (LIBSD_GAMEPLAY_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/world.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/points.cc"
+)
+
+set (LIBSD_FRAMEWORK_GRAPHICS_SOURCES
+    "${LIBSD_FRAMEWORK_DIR}/graphics/shaders.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/shaders.cc"
 )
 
 target_sources(
@@ -97,6 +111,7 @@ target_sources(
        ${LIBSD_FRAMEWORK_LOGGING_SOURCES}
        ${LIBSD_GAMEPLAY_TIME_SOURCES}
        ${LIBSD_FRAMEWORK_GEOMETRY_SOURCES}
+       ${LIBSD_FRAMEWORK_GRAPHICS_SOURCES}
 )
 
 source_group(
@@ -142,4 +157,10 @@ source_group(
     "gameplay\\time"
     FILES
         ${LIBSD_GAMEPLAY_TIME_SOURCES}   
+)
+
+source_group(
+    "framework\\graphics"
+    FILES
+        ${LIBSD_FRAMEWORK_GRAPHICS_SOURCES}   
 )
