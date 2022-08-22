@@ -17,9 +17,15 @@ set (LIBSD_FRAMEWORK_TIME_DIR ${LIBSD_FRAMEWORK_DIR}/time)
 set (LIBSD_FRAMEWORK_LOGGING_DIR ${LIBSD_FRAMEWORK_DIR}/logging)
 set (LIBSD_GAMEPLAY_TIME_DIR ${LIBSD_GAMEPLAY_DIR}/time)
 
+set (LIBSD_FRAMEWORK_SOURCES
+    "${LIBSD_FRAMEWORK_DIR}/types.h"
+)
+
 set (LIBSD_FRAMEWORK_GEOMETRY_SOURCES
     "${LIBSD_FRAMEWORK_DIR}/geometry/point.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/point.cc"
+    "${LIBSD_FRAMEWORK_DIR}/geometry/mesh.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/geometry/mesh.cc"
 )
 
 set (LIBSD_GAMEPLAY_TIME_SOURCES
@@ -66,6 +72,7 @@ set (LIBSD_FRAMEWORK_INTERFACES_HEADERS
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IShaderProgram.h"
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/mouse_button_change_event_handler.h"
     "${LIBSD_FRAMEWORK_INTERFACES_DIR}/mouse_release_callback.h"
+    "${LIBSD_FRAMEWORK_INTERFACES_DIR}/IGameClock.h"
 )
 
 set (LIBSD_FRAMEWORK_LOGGING_SOURCES
@@ -97,6 +104,12 @@ set (LIBSD_FRAMEWORK_GRAPHICS_SOURCES
     "${LIBSD_FRAMEWORK_DIR}/graphics/shaders.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/shaders.cc"
     "${LIBSD_FRAMEWORK_DIR}/graphics/buffer_segment.h"
+    "${LIBSD_FRAMEWORK_DIR}/graphics/array_buffer.h"
+)
+
+set (LIBSD_FRAMEWORK_SCENE_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../include/sd/framework/scene/node.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/scene/node.cc"
 )
 
 target_sources(
@@ -113,6 +126,8 @@ target_sources(
        ${LIBSD_GAMEPLAY_TIME_SOURCES}
        ${LIBSD_FRAMEWORK_GEOMETRY_SOURCES}
        ${LIBSD_FRAMEWORK_GRAPHICS_SOURCES}
+       ${LIBSD_FRAMEWORK_SCENE_SOURCES}
+       ${LIBSD_FRAMEWORK_SOURCES}
 )
 
 source_group(
@@ -164,4 +179,16 @@ source_group(
     "framework\\graphics"
     FILES
         ${LIBSD_FRAMEWORK_GRAPHICS_SOURCES}   
+)
+
+source_group(
+    "framework\\scene"
+    FILES
+        ${LIBSD_FRAMEWORK_SCENE_SOURCES}
+)
+
+source_group(
+    "framework"
+    FILES
+        ${LIBSD_FRAMEWORK_SOURCES}
 )

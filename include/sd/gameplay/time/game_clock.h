@@ -8,6 +8,7 @@
 #include <limits>
 #include <set>
 
+#include "sd/framework/interfaces/IGameClock.h"
 #include "sd/framework/time/clock.h"
 #include "sd/gameplay/time/timer.h"
 #include "sd/gameplay/time/game_clock_timer.h"
@@ -18,7 +19,8 @@ namespace gameplay {
 namespace time {
     class GameClockTimer;
     class GameClock :
-        private sd::framework::time::Clock {
+        private sd::framework::time::Clock,
+        public sd::framework::interfaces::IGameClock {
     public:
         GameClock();
         GameClock(const GameClock& other);
@@ -28,7 +30,7 @@ namespace time {
         GameClock& operator=(const GameClock& other);
         GameClock& operator=(GameClock&& other) noexcept;
 
-        double DeltaTime() const noexcept;
+        virtual double DeltaTime() const noexcept override;
         bool IsPaused() const noexcept;
 
         void Tick();
